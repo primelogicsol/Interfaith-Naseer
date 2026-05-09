@@ -1,0 +1,14 @@
+services:
+  app:
+    image: ghcr.io/YOUR_GITHUB_USERNAME/interfaith:latest
+    ports:
+      - "3060:3060"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - FROM_EMAIL=${FROM_EMAIL}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-${NEXT_PUBLIC_APP_URL}/api}
+    restart: unless-stopped

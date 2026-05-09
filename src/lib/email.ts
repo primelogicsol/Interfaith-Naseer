@@ -1,16 +1,19 @@
 import { Resend } from 'resend'
 import { verificationEmailTemplate, passwordResetEmailTemplate, roleApprovedEmailTemplate } from './email-templates'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const fromEmail = process.env.FROM_EMAIL || 'noreply@interfaithpeacebridge.org'
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3060'
+
+function getResend(): Resend {
+  return new Resend(process.env.RESEND_API_KEY || '')
+}
 
 /**
  * Send email verification OTP
  */
 export async function sendVerificationEmail(email: string, otp: string, fullName: string) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: fromEmail,
       to: email,
       subject: 'Verify Your Email - Interfaith Peace Bridge',
@@ -29,7 +32,7 @@ export async function sendPasswordResetEmail(email: string, token: string, fullN
   const resetUrl = `${appUrl}/reset-password?token=${token}`
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: fromEmail,
       to: email,
       subject: 'Reset Your Password - Interfaith Peace Bridge',
@@ -52,7 +55,7 @@ export async function sendRoleApprovedEmail(
   const dashboardUrl = `${appUrl}/admin`
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: fromEmail,
       to: email,
       subject: 'Role Request Approved - Interfaith Peace Bridge',
