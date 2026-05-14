@@ -6,45 +6,64 @@ on:
   workflow_dispatch:
 
 env:
-  APP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/interfaith-app
-  MIGRATE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/interfaith-migrate
+  APP_IMAGE: naseerahmedwighio/interfaith-app
+  MIGRATE_IMAGE: naseerahmedwighio/interfaith-migrate
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # IMPORTANT
+    environment: interfaith
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # =========================================================
+      # Docker Hub Login
+      # =========================================================
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push app image
+      # =========================================================
+      # Build Main App Image
+      # =========================================================
+      - name: Build and Push App Image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           target: runner
           push: true
-          tags: ${{ env.APP_IMAGE }}:latest,${{ env.APP_IMAGE }}:${{ github.sha }}
+          tags: |
+            ${{ env.APP_IMAGE }}:latest
+            ${{ env.APP_IMAGE }}:${{ github.sha }}
 
-      - name: Build and push migrate image
+      # =========================================================
+      # Build Migration Image
+      # =========================================================
+      - name: Build and Push Migration Image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           target: migrate
           push: true
-          tags: ${{ env.MIGRATE_IMAGE }}:latest,${{ env.MIGRATE_IMAGE }}:${{ github.sha }}
+          tags: |
+            ${{ env.MIGRATE_IMAGE }}:latest
+            ${{ env.MIGRATE_IMAGE }}:${{ github.sha }}
 
-      - name: Deploy to server
+      # =========================================================
+      # Deploy to VPS
+      # =========================================================
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -52,10 +71,17 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/interfaith
-            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            docker pull ${{ env.APP_IMAGE }}:latest
-            docker pull ${{ env.MIGRATE_IMAGE }}:latest
-            docker-compose down
-            docker-compose up -d
-            docker image prune -f
+
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+              -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+              --password-stdin
+
+            docker compose pull
+
+            docker compose down
+
+            docker compose up -d
+
+            docker image prune -af
+
             docker logout
