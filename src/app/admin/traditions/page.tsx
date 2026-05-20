@@ -140,7 +140,7 @@ export default function TraditionsManagement() {
                     <span className="text-3xl">{tradition.symbol}</span>
                   </td> */}
                   <td className="px-6 py-4">
-                    <div className="font-medium text-[#f5f3ee]" style={{ color: tradition.color }}>
+                    <div className="font-medium text-[#f5f3ee] truncate max-w-xs" style={{ color: tradition.color }}>
                       {tradition.name}
                     </div>
                   </td>

@@ -132,14 +132,14 @@ export default function NewsletterSubscribersManagement() {
                         <Mail className="w-4 h-4 text-premium-light" />
                         <a
                           href={`mailto:${subscriber.email}`}
-                          className="text-[#f5f3ee] hover:text-[#c8a75e] transition-colors"
+                          className="text-[#f5f3ee] hover:text-[#c8a75e] transition-colors truncate max-w-[200px] block"
                         >
                           {subscriber.email}
                         </a>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-[#f5f3ee]">{subscriber.name || '-'}</div>
+                      <div className="text-[#f5f3ee] truncate max-w-[200px]">{subscriber.name || '-'}</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">

@@ -140,7 +140,7 @@ export default function ShareableQuotesManagement() {
                       </div>
                     </div>
                     <div className="p-4 bg-[#0b0f2a]/30 rounded-xl mb-3">
-                      <p className="text-[#f5f3ee] text-lg italic">"{quote.quoteText}"</p>
+                      <p className="text-[#f5f3ee] text-lg italic line-clamp-3">"{quote.quoteText}"</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-premium-light text-sm">Background:</span>

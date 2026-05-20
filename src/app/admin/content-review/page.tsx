@@ -912,15 +912,15 @@ export default function ContentReviewPage() {
   const pendingItems = getAllPendingItems()
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-[#f5f3ee] mb-2">Content Review</h1>
-        <p className="text-premium-light">Review and approve pending content submissions</p>
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
+      <div className="mb-4 sm:mb-8">
+        <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#f5f3ee] mb-1 sm:mb-2">Content Review</h1>
+        <p className="text-xs sm:text-base text-premium-light">Review and approve pending content submissions</p>
       </div>
 
       {message && (
         <div
-          className={`mb-6 p-4 rounded-xl ${
+          className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl text-xs sm:text-base ${
             message.type === 'success'
               ? 'bg-green-500/20 border border-green-500/30 text-green-400'
               : 'bg-red-500/20 border border-red-500/30 text-red-400'
@@ -931,11 +931,11 @@ export default function ContentReviewPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-3 md:gap-4 mb-6">
+      <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
         {currentUser?.role === 'admin' && (
           <button
             onClick={() => setSelectedTab('pending_admin')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+            className={`px-3 sm:px-6 py-1.5 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-base font-semibold transition-all ${
               selectedTab === 'pending_admin'
                 ? 'bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a]'
                 : 'bg-[#0b0f2a]/50 border border-[#c8a75e]/20 text-premium-light hover:bg-[#0b0f2a]/70'
@@ -946,7 +946,7 @@ export default function ContentReviewPage() {
         )}
         <button
           onClick={() => setSelectedTab('pending_moderator')}
-          className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+          className={`px-3 sm:px-6 py-1.5 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-base font-semibold transition-all ${
             selectedTab === 'pending_moderator'
               ? 'bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a]'
               : 'bg-[#0b0f2a]/50 border border-[#c8a75e]/20 text-premium-light hover:bg-[#0b0f2a]/70'
@@ -957,40 +957,40 @@ export default function ContentReviewPage() {
       </div>
 
       {/* Content List */}
-      <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20">
+      <div className="glass-effect rounded-xl sm:rounded-2xl p-3 sm:p-6 border border-[#c8a75e]/20">
         {pendingItems.length === 0 ? (
           <div className="text-center py-12">
             <Clock className="w-16 h-16 text-premium-light mx-auto mb-4" />
             <p className="text-premium-light text-lg">No pending content to review</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {pendingItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl p-6"
+                className="bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl p-3 sm:p-6"
               >
-                <div className="flex items-start justify-between gap-4 mb-4">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4 mb-3 sm:mb-4">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <span className="px-3 py-1 bg-[#c8a75e]/20 text-[#c8a75e] rounded-full text-xs font-semibold uppercase">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2 flex-wrap">
+                      <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-[#c8a75e]/20 text-[#c8a75e] rounded-full text-[10px] sm:text-xs font-semibold uppercase">
                         {getContentTypeName(item.type, item)}
                       </span>
-                      <span className="text-xs text-premium-light">
+                      <span className="text-[10px] sm:text-xs text-premium-light">
                         {new Date(item.createdAt).toLocaleDateString()}
                       </span>
                       {'rejectionReason' in item && item.rejectionReason && (
-                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full text-xs font-medium">
+                        <span className="px-1.5 sm:px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full text-[10px] sm:text-xs font-medium">
                           Previously Rejected
                         </span>
                       )}
                     </div>
                     {item.type !== 'pending_edit' && (
-                      <h3 className="text-lg font-bold text-[#f5f3ee] mb-1">
+                      <h3 className="text-sm sm:text-base md:text-lg font-bold text-[#f5f3ee] mb-0.5 sm:mb-1 leading-snug">
                         {getContentTitle(item as ContentItem)}
                       </h3>
                     )}
-                    <p className="text-sm text-premium-light">
+                    <p className="text-[11px] sm:text-sm text-premium-light">
                       {item.type === 'pending_edit' ? 'Edited by' : 'Created by'}: {item.creator.fullName} ({item.creator.email})
                     </p>
                   </div>
@@ -1001,9 +1001,9 @@ export default function ContentReviewPage() {
                         onClick={() => handleEdit(item)}
                         disabled={editingId !== null || processingId === item.id}
                         title="Edit"
-                        className="px-2 sm:px-4 py-2 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/30 text-[#c8a75e] rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
+                        className="px-2 sm:px-4 py-1.5 sm:py-2 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/30 text-[#c8a75e] rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                       >
-                        <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <Pencil className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">Edit</span>
                       </button>
                     )}
@@ -1011,12 +1011,12 @@ export default function ContentReviewPage() {
                       onClick={() => handleApprove(item.type, item.id)}
                       disabled={editingId === item.id || processingId === item.id}
                       title="Approve"
-                      className="px-2 sm:px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
+                      className="px-2 sm:px-4 py-1.5 sm:py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                     >
                       {processingId === item.id ? (
-                        <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
+                        <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
                       ) : (
-                        <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       )}
                       <span className="hidden sm:inline">Approve</span>
                     </button>
@@ -1024,15 +1024,15 @@ export default function ContentReviewPage() {
                       onClick={() => openRejectModal(item.type, item.id)}
                       disabled={editingId === item.id || processingId === item.id}
                       title="Reject"
-                      className="px-2 sm:px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
+                      className="px-2 sm:px-4 py-1.5 sm:py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
                     >
-                      <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <XCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       <span className="hidden sm:inline">Reject</span>
                     </button>
                   </div>
                 </div>
 
-                <div className="border-t border-[#c8a75e]/10 pt-4">
+                <div className="border-t border-[#c8a75e]/10 pt-3 sm:pt-4">
                   {editingId === item.id
                     ? renderEditForm(item)
                     : item.type === 'pending_edit'

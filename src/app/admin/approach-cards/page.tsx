@@ -287,7 +287,7 @@ export default function ApproachCardsManagement() {
                     <span className="text-xs text-premium-light font-mono">#{c.orderIndex}</span>
                     {getSectionBadge(c.sectionType)}
                   </div>
-                  <h3 className="text-base font-semibold text-[#f5f3ee] mb-1">{c.title}</h3>
+                  <h3 className="text-base font-semibold text-[#f5f3ee] mb-1 truncate">{c.title}</h3>
                   {c.description && (
                     <p className="text-sm text-[#f5f3ee]/70 line-clamp-2 mb-1">{c.description}</p>
                   )}

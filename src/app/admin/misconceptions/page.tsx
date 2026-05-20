@@ -168,19 +168,19 @@ export default function MisconceptionsManagement() {
                       <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <p className="text-sm text-red-400 font-medium mb-1">Misconception:</p>
-                        <p className="text-[#f5f3ee]">{misconception.misconception}</p>
+                        <p className="text-[#f5f3ee] line-clamp-2">{misconception.misconception}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
                     <p className="text-sm text-green-400 font-medium mb-1">Truth:</p>
-                    <p className="text-[#f5f3ee]">{misconception.truth}</p>
+                    <p className="text-[#f5f3ee] line-clamp-2">{misconception.truth}</p>
                   </div>
 
                   <div className="p-4 bg-[#0b0f2a]/30 rounded-xl">
                     <p className="text-sm text-premium-light font-medium mb-1">Explanation:</p>
-                    <p className="text-[#f5f3ee]">{misconception.explanation}</p>
+                    <p className="text-[#f5f3ee] line-clamp-3">{misconception.explanation}</p>
                   </div>
                 </div>
               </div>

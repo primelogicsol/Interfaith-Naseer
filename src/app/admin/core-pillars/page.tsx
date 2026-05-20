@@ -125,8 +125,8 @@ export default function CorePillarsManagement() {
                   
                   <div className="flex-1">
                     <div className="text-4xl">{pillar.icon}</div>
-                    <h3 className="text-xl font-semibold text-[#f5f3ee] mb-3">{pillar.title}</h3>
-                    <p className="text-premium-light leading-relaxed">{pillar.description}</p>
+                    <h3 className="text-xl font-semibold text-[#f5f3ee] mb-3 truncate">{pillar.title}</h3>
+                    <p className="text-premium-light leading-relaxed line-clamp-2">{pillar.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

@@ -202,7 +202,7 @@ export default function AssessmentQuestionsManagement() {
                     <span className="text-xs text-premium-light font-mono">#{q.orderIndex}</span>
                     {getCategoryBadge(q.category)}
                   </div>
-                  <p className="text-sm text-[#f5f3ee]">{q.questionText}</p>
+                  <p className="text-sm text-[#f5f3ee] line-clamp-2">{q.questionText}</p>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <button onClick={() => handleEdit(q.id)} className="p-2 hover:bg-[#c8a75e]/20 rounded-xl transition-colors">

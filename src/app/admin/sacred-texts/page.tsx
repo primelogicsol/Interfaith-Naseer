@@ -136,7 +136,7 @@ export default function SacredTextsManagement() {
                 {/* <div className="text-4xl">{text.tradition?.symbol || '🌍'}</div> */}
                 <div className="flex-1">
                   <div className='flex justify-between '>
-                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2">{text.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2 truncate">{text.title}</h3>
 
 
 
@@ -180,20 +180,20 @@ export default function SacredTextsManagement() {
                   <div className="space-y-3">
                     <div className="p-4 bg-[#0b0f2a]/30 rounded-xl border border-[#c8a75e]/10">
                       <p className="text-xs text-premium-light mb-1 font-semibold uppercase tracking-wide">Text Content:</p>
-                      <p className="text-[#f5f3ee] leading-relaxed italic">"{text.textContent}"</p>
+                      <p className="text-[#f5f3ee] leading-relaxed italic line-clamp-3">"{text.textContent}"</p>
                     </div>
 
                     {text.translation && (
                       <div className="p-4 bg-[#0b0f2a]/20 rounded-xl border border-[#c8a75e]/10">
                         <p className="text-xs text-premium-light mb-1 font-semibold uppercase tracking-wide">Translation:</p>
-                        <p className="text-premium-light text-sm leading-relaxed">{text.translation}</p>
+                        <p className="text-premium-light text-sm leading-relaxed line-clamp-2">{text.translation}</p>
                       </div>
                     )}
 
                     {text.context && (
                       <div className="p-4 bg-[#0b0f2a]/20 rounded-xl border border-[#c8a75e]/10">
                         <p className="text-xs text-premium-light mb-1 font-semibold uppercase tracking-wide">Context:</p>
-                        <p className="text-premium-light text-sm leading-relaxed">{text.context}</p>
+                        <p className="text-premium-light text-sm leading-relaxed line-clamp-2">{text.context}</p>
                       </div>
                     )}
                   </div>

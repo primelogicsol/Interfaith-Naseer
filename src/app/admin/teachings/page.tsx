@@ -134,7 +134,7 @@ export default function TeachingsManagement() {
                 {/* <div className="text-4xl">{teaching.tradition?.symbol || '🌍'}</div> */}
                 <div className="flex-1">
                   <div className='flex justify-between items-start'>
-                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2">{teaching.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2 truncate">{teaching.title}</h3>
 
 
 
@@ -169,7 +169,7 @@ export default function TeachingsManagement() {
                     </span>
                     <span className="text-premium-light text-sm">• {teaching.source}</span>
                   </div>
-                  <p className="text-premium-light leading-relaxed">{teaching.content}</p>
+                  <p className="text-premium-light leading-relaxed line-clamp-3">{teaching.content}</p>
                 </div>
               </div>
               {/* <div className="flex items-center gap-2">

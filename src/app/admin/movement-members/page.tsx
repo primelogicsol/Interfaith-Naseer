@@ -100,10 +100,10 @@ export default function MovementMembersManagement() {
             <div key={member.id} className="glass-effect rounded-2xl p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2">{member.full_name}</h3>
+                  <h3 className="text-xl font-semibold text-[#f5f3ee] mb-2 truncate">{member.full_name}</h3>
                   <div className="flex items-center gap-2 text-premium-light mb-2">
                     <Mail className="w-4 h-4" />
-                    <a href={`mailto:${member.email}`} className="hover:text-[#c8a75e] transition-colors">
+                    <a href={`mailto:${member.email}`} className="hover:text-[#c8a75e] transition-colors truncate">
                       {member.email}
                     </a>
                   </div>
@@ -131,21 +131,21 @@ export default function MovementMembersManagement() {
               {member.tradition_affiliation && (
                 <div className="mb-3">
                   <span className="text-premium-light text-sm">Tradition: </span>
-                  <span className="text-[#f5f3ee]">{member.tradition_affiliation}</span>
+                  <span className="text-[#f5f3ee] truncate">{member.tradition_affiliation}</span>
                 </div>
               )}
 
               {member.how_heard && (
                 <div className="mb-3">
                   <span className="text-premium-light text-sm">How they heard: </span>
-                  <span className="text-[#f5f3ee]">{member.how_heard}</span>
+                  <span className="text-[#f5f3ee] truncate">{member.how_heard}</span>
                 </div>
               )}
 
               {member.message && (
                 <div className="mt-4 p-4 bg-[#0b0f2a]/30 rounded-xl">
                   <p className="text-premium-light text-sm mb-1">Message:</p>
-                  <p className="text-[#f5f3ee]">{member.message}</p>
+                  <p className="text-[#f5f3ee] line-clamp-3">{member.message}</p>
                 </div>
               )}
             </div>

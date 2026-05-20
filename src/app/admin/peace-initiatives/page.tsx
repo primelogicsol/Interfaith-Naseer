@@ -123,8 +123,8 @@ export default function PeaceInitiativesManagement() {
                 <div className="flex items-start gap-4 flex-1">
                   <div className="text-4xl">{initiative.icon}</div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-[#f5f3ee] mb-3">{initiative.title}</h3>
-                    <p className="text-premium-light leading-relaxed">{initiative.description}</p>
+                    <h3 className="text-xl font-semibold text-[#f5f3ee] mb-3 truncate">{initiative.title}</h3>
+                    <p className="text-premium-light leading-relaxed line-clamp-2">{initiative.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

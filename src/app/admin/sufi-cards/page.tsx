@@ -292,14 +292,14 @@ export default function SufiCardsManagement() {
                     <span className="text-xs text-premium-light font-mono">#{c.orderIndex}</span>
                     {getSectionBadge(c.sectionType)}
                   </div>
-                  <h3 className="text-base font-semibold text-[#f5f3ee] mb-1">{c.title}</h3>
-                  {c.subtitle && <p className="text-sm text-premium-light mb-1">{c.subtitle}</p>}
+                  <h3 className="text-base font-semibold text-[#f5f3ee] mb-1 truncate">{c.title}</h3>
+                  {c.subtitle && <p className="text-sm text-premium-light mb-1 truncate">{c.subtitle}</p>}
                   {c.description && (
                     <p className="text-sm text-[#f5f3ee]/70 line-clamp-2 mb-1">{c.description}</p>
                   )}
                   {c.quote && (
                     <div className="p-3 bg-[#0b0f2a]/30 rounded-xl mt-2">
-                      <p className="text-sm text-[#c8a75e] italic">"{c.quote}"</p>
+                      <p className="text-sm text-[#c8a75e] italic line-clamp-2">"{c.quote}"</p>
                     </div>
                   )}
                   <div className="flex items-center gap-3 mt-2">

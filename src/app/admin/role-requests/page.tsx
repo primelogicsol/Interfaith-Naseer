@@ -246,12 +246,12 @@ export default function AdminRoleRequestsPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-bold text-[#f5f3ee]">
+                        <h3 className="text-lg font-bold text-[#f5f3ee] truncate">
                           {request.user.fullName}
                         </h3>
                         {getStatusBadge(request.status)}
                       </div>
-                      <p className="text-sm text-premium-light mb-2">{request.user.email}</p>
+                      <p className="text-sm text-premium-light mb-2 truncate">{request.user.email}</p>
                       <div className="flex flex-wrap items-center gap-3 text-xs">
                         <span className="flex items-center gap-1 text-premium-light">
                           <span className="font-semibold">Current Role:</span>
@@ -277,7 +277,7 @@ export default function AdminRoleRequestsPage() {
                           Reason
                         </span>
                       </div>
-                      <p className="text-sm text-[#f5f3ee] leading-relaxed">{request.reason}</p>
+                      <p className="text-sm text-[#f5f3ee] leading-relaxed line-clamp-2">{request.reason}</p>
                     </div>
                   )}
 
@@ -290,7 +290,7 @@ export default function AdminRoleRequestsPage() {
                           Admin Notes
                         </span>
                       </div>
-                      <p className="text-sm text-premium-light leading-relaxed">{request.adminNotes}</p>
+                      <p className="text-sm text-premium-light leading-relaxed line-clamp-2">{request.adminNotes}</p>
                     </div>
                   )}
 
