@@ -112,7 +112,7 @@ export default function NewShareableQuote() {
             required
             value={formData.sacredTextId}
             onChange={(e) => setFormData({ ...formData, sacredTextId: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
           >
             <option value="">Select a sacred text</option>
             {sacredTexts.map((text) => (
@@ -132,7 +132,7 @@ export default function NewShareableQuote() {
             value={formData.quoteText}
             onChange={(e) => setFormData({ ...formData, quoteText: e.target.value })}
             rows={4}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="Enter the quote text for the shareable card..."
           />
         </div>
@@ -144,7 +144,7 @@ export default function NewShareableQuote() {
           <select
             value={formData.backgroundStyle}
             onChange={(e) => setFormData({ ...formData, backgroundStyle: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
           >
             <option value="gradient-1">Gradient 1</option>
             <option value="gradient-2">Gradient 2</option>
@@ -158,14 +158,14 @@ export default function NewShareableQuote() {
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
+            <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {saving ? 'Creating...' : 'Create Quote'}
           </button>
           <Link
             href="/admin/shareable-quotes"
-            className="px-6 py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
+            className="px-3 py-2 sm:px-4 sm:py-2.5 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
           >
             Cancel
           </Link>

@@ -620,11 +620,11 @@ export default function PeaceInitiativesPageEditor() {
                   <div className="mt-2">{renderField('Event', ciEditForm.event, v => setCiEditForm(p => ({ ...p, event: v })))}</div>
                   <div className="mt-2">
                     <label className="block text-xs text-premium-light mb-1">Icon Color</label>
-                    <div className="flex items-center gap-3">
+                    <div className="grid grid-cols-4 gap-2">
                       <input type="color" value={ciEditForm.iconColor || '#c8a75e'} onChange={e => setCiEditForm(p => ({ ...p, iconColor: e.target.value }))}
-                        className="w-12 h-9 rounded-xl bg-[#0b0f2a]/40 border border-[#c8a75e]/20 cursor-pointer" />
+                        className="col-span-1 w-full h-9 rounded-lg bg-[#0b0f2a]/40 border border-[#c8a75e]/20 cursor-pointer" />
                       <input type="text" value={ciEditForm.iconColor} onChange={e => setCiEditForm(p => ({ ...p, iconColor: e.target.value }))}
-                        className="flex-1 px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] placeholder-premium-light/50 focus:outline-none focus:border-[#c8a75e]/50"
+                        className="col-span-3 px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-lg text-[#f5f3ee] placeholder-premium-light/50 focus:outline-none focus:border-[#c8a75e]/50"
                         placeholder="#hex" />
                     </div>
                   </div>
@@ -654,11 +654,11 @@ export default function PeaceInitiativesPageEditor() {
                 <div className="mt-2">{renderField('Event', ciAddForm.event, v => setCiAddForm(p => ({ ...p, event: v })))}</div>
                 <div className="mt-2">
                   <label className="block text-xs text-premium-light mb-1">Icon Color</label>
-                  <div className="flex items-center gap-3">
+                  <div className="grid grid-cols-4 gap-2">
                     <input type="color" value={ciAddForm.iconColor || '#c8a75e'} onChange={e => setCiAddForm(p => ({ ...p, iconColor: e.target.value }))}
-                      className="w-12 h-9 rounded-xl bg-[#0b0f2a]/40 border border-[#c8a75e]/20 cursor-pointer" />
+                      className="col-span-1 w-full h-9 rounded-lg bg-[#0b0f2a]/40 border border-[#c8a75e]/20 cursor-pointer" />
                     <input type="text" value={ciAddForm.iconColor} onChange={e => setCiAddForm(p => ({ ...p, iconColor: e.target.value }))}
-                      className="flex-1 px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] placeholder-premium-light/50 focus:outline-none focus:border-[#c8a75e]/50"
+                      className="col-span-3 px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-lg text-[#f5f3ee] placeholder-premium-light/50 focus:outline-none focus:border-[#c8a75e]/50"
                       placeholder="#hex" />
                   </div>
                 </div>

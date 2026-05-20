@@ -483,7 +483,7 @@ export default function AdminDashboard() {
                 </Link>
                     <Link
                       href={`${card.href}/new`}
-                      className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#f5f3ee] rounded-xl hover:shadow-premium transition-all"
+                      className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-4 sm:py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#f5f3ee] rounded-lg sm:rounded-xl hover:shadow-premium transition-all text-xs sm:text-sm font-medium"
                     >
                       <Plus className="w-4 h-4" />
                       <span className="text-sm font-medium">Add New</span>

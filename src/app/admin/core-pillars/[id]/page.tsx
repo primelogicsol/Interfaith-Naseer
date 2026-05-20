@@ -113,7 +113,7 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
             required
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="e.g., Interfaith Dialogue"
           />
         </div>
@@ -127,7 +127,7 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={6}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="Describe the core pillar..."
           />
         </div>
@@ -139,18 +139,18 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
             <label className="block text-sm font-bold text-[#aab0d6] mb-2 uppercase tracking-wider">
               Color
             </label>
-            <div className="flex items-center gap-3">
+            <div className="grid grid-cols-4 gap-2">
               <input
                 type="color"
                 value={formData.color || '#c8a75e'}
                 onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                className="w-14 h-11 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 cursor-pointer"
+                className="col-span-1 w-full h-11 rounded-lg bg-[#0b0f2a]/60 border border-[#c8a75e]/20 cursor-pointer"
               />
               <input
                 type="text"
                 value={formData.color}
                 onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                className="flex-1 px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+                className="col-span-3 px-3 py-2 rounded-lg bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all text-sm"
                 placeholder="e.g., #c8a75e"
               />
             </div>
@@ -164,7 +164,7 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
           <select
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -175,14 +175,14 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all text-xs sm:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
+            <Save className="w-3 h-3 sm:w-4 sm:h-4" />
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
           <Link
             href="/admin/core-pillars"
-            className="px-6 py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
+            className="px-3 py-2 md:px-6 md:py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
           >
             Cancel
           </Link>

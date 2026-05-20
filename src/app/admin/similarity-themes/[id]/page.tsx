@@ -224,7 +224,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
             required
             value={themeData.title}
             onChange={(e) => handleTitleChange(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
           />
         </div>
 
@@ -235,7 +235,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
             value={themeData.description}
             onChange={(e) => setThemeData({ ...themeData, description: e.target.value })}
             rows={3}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
           />
         </div>
 
@@ -244,19 +244,19 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
 
           <div>
             <label className="block text-sm font-bold text-[#aab0d6] mb-2 uppercase tracking-wider">Color</label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={themeData.color}
-                onChange={(e) => setThemeData({ ...themeData, color: e.target.value })}
-                className="w-12 h-12 rounded-xl border border-[#c8a75e]/20 bg-transparent cursor-pointer"
-              />
-              <input
-                type="text"
-                value={themeData.color}
-                onChange={(e) => setThemeData({ ...themeData, color: e.target.value })}
-                className="flex-1 px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
-                placeholder="#C8A75E"
+          <div className="grid grid-cols-4 gap-2">
+            <input
+              type="color"
+              value={themeData.color}
+              onChange={(e) => setThemeData({ ...themeData, color: e.target.value })}
+              className="col-span-1 w-full h-11 rounded-lg border border-[#c8a75e]/20 bg-transparent cursor-pointer"
+            />
+            <input
+              type="text"
+              value={themeData.color}
+              onChange={(e) => setThemeData({ ...themeData, color: e.target.value })}
+              className="col-span-3 px-3 py-2 rounded-lg bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono text-sm"
+              placeholder="#C8A75E"
               />
             </div>
           </div>
@@ -270,7 +270,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
               required
               value={themeData.slug}
               onChange={(e) => setThemeData({ ...themeData, slug: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
             />
           </div>
           <div>
@@ -279,7 +279,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
               type="number"
               value={themeData.orderIndex}
               onChange={(e) => setThemeData({ ...themeData, orderIndex: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             />
           </div>
         </div>
@@ -288,14 +288,14 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all text-xs sm:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
+            <Save className="w-3 h-3 sm:w-4 sm:h-4" />
             {saving ? 'Saving...' : 'Save Theme'}
           </button>
           <Link
             href="/admin/similarity-themes"
-            className="px-6 py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
+            className="flex-1 inline-flex items-center justify-center px-2 py-1.5 sm:px-3 sm:py-2 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all text-xs sm:text-sm font-medium text-center"
           >
             Cancel
           </Link>
@@ -327,7 +327,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
                 <select
                   value={teachingForm.traditionId}
                   onChange={(e) => setTeachingForm({ ...teachingForm, traditionId: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
                 >
                   <option value="">Select tradition...</option>
                   {traditions.map(t => (
@@ -342,7 +342,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
                   value={teachingForm.source}
                   onChange={(e) => setTeachingForm({ ...teachingForm, source: e.target.value })}
                   placeholder="e.g., Quran 49:13"
-                  className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
                 />
               </div>
             </div>
@@ -353,7 +353,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
                 onChange={(e) => setTeachingForm({ ...teachingForm, teaching: e.target.value })}
                 rows={3}
                 placeholder="The actual teaching quote or text..."
-                className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all resize-none"
+                className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all resize-none"
               />
             </div>
             <div>
@@ -363,7 +363,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
                 value={teachingForm.context}
                 onChange={(e) => setTeachingForm({ ...teachingForm, context: e.target.value })}
                 placeholder="Historical or interpretive context..."
-                className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
+                className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -373,7 +373,7 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
                   type="number"
                   value={teachingForm.orderIndex}
                   onChange={(e) => setTeachingForm({ ...teachingForm, orderIndex: parseInt(e.target.value) || 0 })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 transition-all"
                 />
               </div>
             </div>
@@ -381,16 +381,16 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
               <button
                 onClick={saveTeaching}
                 disabled={teachingSaving || !teachingForm.traditionId || !teachingForm.teaching || !teachingForm.source}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl font-medium hover:shadow-premium transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-lg sm:rounded-xl font-medium hover:shadow-premium transition-all disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
               >
-                {teachingSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                {teachingSaving ? <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" /> : <Check className="w-3 h-3 sm:w-4 sm:h-4" />}
                 {teachingSaving ? 'Saving...' : editingTeaching ? 'Update Teaching' : 'Add Teaching'}
               </button>
               <button
                 onClick={() => { setShowTeachingForm(false); setEditingTeaching(null) }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 text-premium-light hover:text-[#f5f3ee] transition-colors text-sm"
+                className="inline-flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 text-premium-light hover:text-[#f5f3ee] transition-colors text-xs sm:text-sm"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3 h-3 sm:w-4 sm:h-4" />
                 Cancel
               </button>
             </div>

@@ -193,13 +193,13 @@ export default function AdminRoleRequestsPage() {
       </div>
 
       {/* Status Filter */}
-      <div className="glass-effect rounded-xl p-2 flex items-center gap-2 justify-between md:flex-wrap">
-        <Filter className="w-4 h-4 text-premium-light mr-2" />
+      <div className="glass-effect rounded-xl p-2 flex flex-wrap items-center justify-between gap-1.5">
+        <Filter className="w-4 h-4 text-premium-light shrink-0" />
         {filterButtons.map((btn) => (
           <button
             key={btn.value}
             onClick={() => setStatusFilter(btn.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+            className={`flex-1 min-w-[80px] px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
               statusFilter === btn.value
                 ? 'bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a]'
                 : 'text-premium-light hover:text-[#f5f3ee]'
@@ -224,7 +224,7 @@ export default function AdminRoleRequestsPage() {
 
       {/* Requests List */}
       {requests.length === 0 ? (
-        <div className="glass-effect rounded-2xl p-12 text-center">
+        <div className="glass-effect rounded-xl sm:rounded-2xl p-6 sm:p-12 text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h3 className="text-xl font-bold text-[#f5f3ee] mb-2">No Requests Found</h3>
           <p className="text-premium-light">

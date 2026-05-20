@@ -160,11 +160,11 @@ export default function AssessmentQuestionsManagement() {
               className="w-20 p-2.5 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40" />
           </div>
           <div className="flex gap-2 mt-4">
-            <button onClick={handleAdd} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c8a75e] text-[#0b0f2a] rounded-xl text-sm font-medium hover:bg-[#d4b56d] transition-colors">
-              <Save className="w-4 h-4" /> Save
+            <button onClick={handleAdd} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#c8a75e] text-[#0b0f2a] rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium hover:bg-[#d4b56d] transition-colors">
+              <Save className="w-3 h-3 sm:w-4 sm:h-4" /> Save
             </button>
-            <button onClick={cancelAdd} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0b0f2a]/30 text-premium-light rounded-xl text-sm hover:bg-[#0b0f2a]/50 transition-colors">
-              <X className="w-4 h-4" /> Cancel
+            <button onClick={cancelAdd} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#0b0f2a]/30 text-premium-light rounded-lg sm:rounded-xl text-xs sm:text-sm hover:bg-[#0b0f2a]/50 transition-colors">
+              <X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel
             </button>
           </div>
         </div>
@@ -187,11 +187,11 @@ export default function AssessmentQuestionsManagement() {
                     className="w-20 p-2.5 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40" />
                 </div>
                 <div className="flex gap-2 mt-4">
-                  <button onClick={() => handleSave(q.id)} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c8a75e] text-[#0b0f2a] rounded-xl text-sm font-medium hover:bg-[#d4b56d] transition-colors">
-                    <Save className="w-4 h-4" /> Save
+                  <button onClick={() => handleSave(q.id)} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#c8a75e] text-[#0b0f2a] rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium hover:bg-[#d4b56d] transition-colors">
+                    <Save className="w-3 h-3 sm:w-4 sm:h-4" /> Save
                   </button>
-                  <button onClick={cancelEdit} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0b0f2a]/30 text-premium-light rounded-xl text-sm hover:bg-[#0b0f2a]/50 transition-colors">
-                    <X className="w-4 h-4" /> Cancel
+                  <button onClick={cancelEdit} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#0b0f2a]/30 text-premium-light rounded-lg sm:rounded-xl text-xs sm:text-sm hover:bg-[#0b0f2a]/50 transition-colors">
+                    <X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel
                   </button>
                 </div>
               </div>

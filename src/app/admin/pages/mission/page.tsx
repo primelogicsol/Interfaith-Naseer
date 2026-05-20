@@ -124,8 +124,8 @@ export default function MissionPageEditor() {
                   <textarea rows={5} value={editContent} onChange={e => setEditContent(e.target.value)} className="w-full px-3 py-2 bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-sm text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e]/50 resize-y" />
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={handleSave} className="flex items-center gap-1.5 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-xl transition-colors text-sm font-medium"><Check className="w-4 h-4" /> Save</button>
-                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1.5 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl transition-colors text-sm font-medium"><X className="w-4 h-4" /> Cancel</button>
+                  <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium"><Check className="w-3 h-3 sm:w-4 sm:h-4" /> Save</button>
+                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium"><X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel</button>
                 </div>
               </div>
             ) : (
@@ -180,8 +180,8 @@ export default function MissionPageEditor() {
                   <textarea rows={8} value={editContent} onChange={e => setEditContent(e.target.value)} className="w-full px-3 py-2 bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-sm text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e]/50 resize-y" />
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={handleSave} className="flex items-center gap-1.5 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-xl transition-colors text-sm font-medium"><Check className="w-4 h-4" /> Save</button>
-                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1.5 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl transition-colors text-sm font-medium"><X className="w-4 h-4" /> Cancel</button>
+                  <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium"><Check className="w-3 h-3 sm:w-4 sm:h-4" /> Save</button>
+                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium"><X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel</button>
                 </div>
               </div>
             ) : (

@@ -219,21 +219,21 @@ export default function SufiCardsManagement() {
             <IconPicker value={addForm.icon} onChange={v => setAddForm(p => ({ ...p, icon: v }))} />
             <div>
               <label className="block text-xs font-bold text-[#aab0d6] mb-1 uppercase tracking-wider">Color</label>
-              <div className="flex items-center gap-3">
+              <div className="grid grid-cols-4 gap-2">
                 <input type="color" value={addForm.color || '#c8a75e'} onChange={e => setAddForm(p => ({ ...p, color: e.target.value }))}
-                  className="w-12 h-10 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 cursor-pointer" />
+                  className="w-full h-10 rounded-lg bg-[#0b0f2a]/30 border border-[#c8a75e]/10 cursor-pointer col-span-1" />
                 <input value={addForm.color} onChange={e => setAddForm(p => ({ ...p, color: e.target.value }))}
                   placeholder="#hex"
-                  className="flex-1 p-2.5 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40" />
+                  className="w-full p-2 rounded-lg bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40 col-span-3" />
               </div>
             </div>
           </div>
           <div className="flex gap-2 mt-4">
-            <button onClick={handleAdd} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c8a75e] text-[#0b0f2a] rounded-xl text-sm font-medium hover:bg-[#d4b56d] transition-colors">
-              <Save className="w-4 h-4" /> Save
+            <button onClick={handleAdd} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#c8a75e] text-[#0b0f2a] rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium hover:bg-[#d4b56d] transition-colors">
+              <Save className="w-3 h-3 sm:w-4 sm:h-4" /> Save
             </button>
-            <button onClick={cancelAdd} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0b0f2a]/30 text-premium-light rounded-xl text-sm hover:bg-[#0b0f2a]/50 transition-colors">
-              <X className="w-4 h-4" /> Cancel
+            <button onClick={cancelAdd} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#0b0f2a]/30 text-premium-light rounded-lg sm:rounded-xl text-xs sm:text-sm hover:bg-[#0b0f2a]/50 transition-colors">
+              <X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel
             </button>
           </div>
         </div>
@@ -268,20 +268,20 @@ export default function SufiCardsManagement() {
                 <IconPicker value={editForm.icon} onChange={v => setEditForm(p => ({ ...p, icon: v }))} />
                 <div>
                   <label className="block text-xs font-bold text-[#aab0d6] mb-1 uppercase tracking-wider">Color</label>
-                  <div className="flex items-center gap-3">
+                  <div className="grid grid-cols-4 gap-2">
                     <input type="color" value={editForm.color || '#c8a75e'} onChange={e => setEditForm(p => ({ ...p, color: e.target.value }))}
-                      className="w-12 h-10 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 cursor-pointer" />
+                      className="w-full h-10 rounded-lg bg-[#0b0f2a]/30 border border-[#c8a75e]/10 cursor-pointer col-span-1" />
                     <input value={editForm.color} onChange={e => setEditForm(p => ({ ...p, color: e.target.value }))}
                       placeholder="#hex"
-                      className="flex-1 p-2.5 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40" />
+                      className="w-full p-2 rounded-lg bg-[#0b0f2a]/30 border border-[#c8a75e]/10 text-[#f5f3ee] text-sm focus:outline-none focus:border-[#c8a75e]/40 col-span-3" />
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleSave(c.id)} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c8a75e] text-[#0b0f2a] rounded-xl text-sm font-medium hover:bg-[#d4b56d] transition-colors">
-                    <Save className="w-4 h-4" /> Save
+                  <button onClick={() => handleSave(c.id)} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#c8a75e] text-[#0b0f2a] rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium hover:bg-[#d4b56d] transition-colors">
+                    <Save className="w-3 h-3 sm:w-4 sm:h-4" /> Save
                   </button>
-                  <button onClick={cancelEdit} className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0b0f2a]/30 text-premium-light rounded-xl text-sm hover:bg-[#0b0f2a]/50 transition-colors">
-                    <X className="w-4 h-4" /> Cancel
+                  <button onClick={cancelEdit} className="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-[#0b0f2a]/30 text-premium-light rounded-lg sm:rounded-xl text-xs sm:text-sm hover:bg-[#0b0f2a]/50 transition-colors">
+                    <X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel
                   </button>
                 </div>
               </div>

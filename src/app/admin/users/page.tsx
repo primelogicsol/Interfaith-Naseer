@@ -166,7 +166,7 @@ export default function AdminUsersPage() {
                 setRoleFilter(e.target.value)
                 setPage(1)
               }}
-              className="px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30"
+              className="px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30"
             >
               <option value="">All Roles</option>
               <option value="user">User</option>

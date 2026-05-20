@@ -1058,14 +1058,14 @@ export default function ContentReviewPage() {
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={4}
-              className="w-full px-4 py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors resize-none mb-4"
+              className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-lg sm:rounded-xl text-sm sm:text-base text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors resize-none mb-4"
               placeholder="Enter rejection reason..."
             />
             <div className="flex gap-3">
               <button
                 onClick={handleReject}
                 disabled={!rejectionReason.trim() || processingId !== null}
-                className="flex-1 px-4 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-3 py-2 sm:px-4 sm:py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-lg sm:rounded-xl font-semibold transition-all text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {processingId ? 'Rejecting...' : 'Reject Content'}
               </button>
@@ -1076,7 +1076,7 @@ export default function ContentReviewPage() {
                   setRejectionReason('')
                 }}
                 disabled={processingId !== null}
-                className="px-4 py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 text-premium-light rounded-xl hover:bg-[#0b0f2a]/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 sm:px-4 sm:py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 text-premium-light rounded-lg sm:rounded-xl hover:bg-[#0b0f2a]/70 transition-colors text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>

@@ -1,106 +1,65 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Heart, Pencil, X, Check, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Shield, UserCheck, UserX, Calendar, Clock, Mail, CheckCircle2, XCircle } from 'lucide-react'
 
-interface WisdomItem {
+interface UserDetail {
   id: string
-  title: string
-  content: string
+  email: string
+  fullName: string
+  role: string
+  emailVerified: boolean
+  isActive: boolean
+  lastLogin: string | null
+  createdAt: string
+  updatedAt: string
 }
 
-interface PeaceInitiative {
-  id: string
-  title: string
-  description: string
-  status: string | null
-}
-
-export default function PeaceAdmin() {
-  const [wisdom, setWisdom] = useState<WisdomItem[]>([])
-  const [initiatives, setInitiatives] = useState<PeaceInitiative[]>([])
+export default function UserDetailPage() {
+  const params = useParams()
+  const router = useRouter()
+  const [user, setUser] = useState<UserDetail | null>(null)
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [selectedRole, setSelectedRole] = useState('')
+  const [isActive, setIsActive] = useState(true)
 
-  const [wisdomEditingId, setWisdomEditingId] = useState<string | null>(null)
-  const [wisdomEditForm, setWisdomEditForm] = useState({ title: '', content: '' })
-  const [wisdomSaving, setWisdomSaving] = useState(false)
-
-  async function fetchAll() {
+  async function fetchUser() {
     try {
-      const [wRes, pRes] = await Promise.all([
-        fetch('/api/wisdom-to-action'),
-        fetch('/api/peace-initiatives')
-      ])
-      if (wRes.ok) setWisdom(await wRes.json())
-      if (pRes.ok) setInitiatives(await pRes.json())
+      const res = await fetch(`/api/admin/users/${params.id}`)
+      if (!res.ok) throw new Error('Failed to fetch user')
+      const data = await res.json()
+      setUser(data.user)
+      setSelectedRole(data.user.role)
+      setIsActive(data.user.isActive)
     } catch (err) {
-      console.error('Error loading peace data:', err)
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => { fetchAll() }, [])
+  useEffect(() => { fetchUser() }, [params.id])
 
-  // â”€â”€ Wisdom CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-  function handleWisdomEdit(item: WisdomItem) {
-    setWisdomEditingId(item.id)
-    setWisdomEditForm({ title: item.title, content: item.content })
-  }
-
-  async function handleWisdomSave(id: string) {
-    setWisdomSaving(true)
+  async function handleSave() {
+    setSaving(true)
     try {
-      const res = await fetch(`/api/wisdom-to-action/${id}`, {
+      const res = await fetch(`/api/admin/users/${params.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(wisdomEditForm)
+        body: JSON.stringify({ role: selectedRole, isActive }),
       })
-      if (res.ok) { setWisdomEditingId(null); await fetchAll() }
+      if (res.ok) {
+        const data = await res.json()
+        setUser(prev => prev ? { ...prev, role: data.user.role, isActive: data.user.isActive } : prev)
+      }
     } catch (err) {
-      console.error('Error saving:', err)
+      console.error(err)
     } finally {
-      setWisdomSaving(false)
+      setSaving(false)
     }
-  }
-
-  // â”€â”€ Render helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-  function renderField(label: string, value: string, onChange: (v: string) => void, multiline = false) {
-    if (multiline) {
-      return (
-        <div>
-          <label className="block text-xs text-premium-light mb-1">{label}</label>
-          <textarea value={value} onChange={e => onChange(e.target.value)} rows={5}
-            className="w-full px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e]/50 resize-y" />
-        </div>
-      )
-    }
-    return (
-      <div>
-        <label className="block text-xs text-premium-light mb-1">{label}</label>
-        <input type="text" value={value} onChange={e => onChange(e.target.value)}
-          className="w-full px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e]/50" />
-      </div>
-    )
-  }
-
-  function renderActions(onSave: () => void, onCancel: () => void, saving?: boolean) {
-    return (
-      <div className="flex items-center gap-2 mt-3">
-        <button onClick={onSave} disabled={saving}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-xl transition-colors text-xs font-medium disabled:opacity-50">
-          {saving ? <div className="w-3.5 h-3.5 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" /> : <Check className="w-3.5 h-3.5" />}
-          Save
-        </button>
-        <button onClick={onCancel}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-premium-light rounded-xl transition-colors text-xs font-medium">
-          <X className="w-3.5 h-3.5" /> Cancel
-        </button>
-      </div>
-    )
   }
 
   if (loading) {
@@ -111,7 +70,20 @@ export default function PeaceAdmin() {
             <div className="absolute inset-0 border-4 border-[#c8a75e]/20 rounded-full"></div>
             <div className="absolute inset-0 border-4 border-transparent border-t-[#c8a75e] rounded-full animate-spin"></div>
           </div>
-          <p className="text-lg text-premium-light">Loading Peace Admin...</p>
+          <p className="text-lg text-premium-light">Loading user...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="space-y-4">
+        <Link href="/admin/users" className="inline-flex items-center gap-2 text-sm text-[#c8a75e] hover:text-[#d4b56d] transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to Users
+        </Link>
+        <div className="text-center py-12">
+          <p className="text-lg text-premium-light">User not found</p>
         </div>
       </div>
     )
@@ -119,87 +91,126 @@ export default function PeaceAdmin() {
 
   return (
     <div className="space-y-6">
+      <Link href="/admin/users" className="inline-flex items-center gap-2 text-sm text-[#c8a75e] hover:text-[#d4b56d] transition-colors">
+        <ArrowLeft className="w-4 h-4" /> Back to Users
+      </Link>
+
       <div>
-        <h1 className="text-2xl lg:text-3xl font-bold text-[#f5f3ee]">Peace Page Admin</h1>
-        <p className="text-premium-light mt-1 text-sm lg:text-base">
-          Manage the &ldquo;The Path from Wisdom to Action&rdquo; quote and Active Initiatives
-        </p>
+        <h1 className="text-2xl lg:text-3xl font-bold text-[#f5f3ee]">{user.fullName}</h1>
+        <p className="text-premium-light mt-1 text-sm lg:text-base">User details and account management</p>
       </div>
 
       <div className="grid gap-6">
-
-        {/* The Path from Wisdom to Action */}
+        {/* User Info */}
         <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
-          <div className="space-y-3">
-            {wisdom.length > 0 ? wisdom.map(w => (
-              wisdomEditingId === w.id ? (
-                <div key={w.id}>
-                  <div className="mb-2">
-                    {renderField('Title', wisdomEditForm.title, v => setWisdomEditForm(p => ({ ...p, title: v })))}
-                  </div>
-                  <div>
-                    {renderField('Content', wisdomEditForm.content, v => setWisdomEditForm(p => ({ ...p, content: v })), true)}
-                  </div>
-                  {renderActions(() => handleWisdomSave(w.id), () => setWisdomEditingId(null), wisdomSaving)}
-                </div>
-              ) : (
-                <div key={w.id}>
-                  <p className="text-xs font-medium text-premium-light mb-1">Title</p>
-                  <p className="text-sm font-medium text-[#f5f3ee] mb-3">{w.title}</p>
-                  <p className="text-xs font-medium text-premium-light mb-1">Content</p>
-                  <p className="text-sm text-premium-light leading-relaxed mb-3">
-                    {w.content.length > 200 ? w.content.slice(0, 200) + '...' : w.content}
-                  </p>
-                  <button onClick={() => handleWisdomEdit(w)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#c8a75e]/10 hover:bg-[#c8a75e]/20 text-[#c8a75e] rounded-xl transition-colors text-xs font-medium">
-                    <Pencil className="w-3.5 h-3.5" /> Edit
-                  </button>
-                </div>
-              )
-            )) : (
-              <p className="text-sm text-premium-light italic">No quotes found</p>
-            )}
-          </div>
-        </div>
-
-        {/* Active Initiatives */}
-        <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
+          <h2 className="text-base sm:text-lg font-semibold text-[#f5f3ee] mb-4">Account Information</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
               <div>
-                <h2 className="text-lg font-semibold text-[#f5f3ee]">Active Initiatives</h2>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/20 text-rose-400 mt-1">
-                  {initiatives.length} initiative{initiatives.length !== 1 ? 's' : ''}
-                </span>
+                <p className="text-[10px] sm:text-xs text-premium-light">Email</p>
+                <p className="text-xs sm:text-sm text-[#f5f3ee]">{user.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
+              <div>
+                <p className="text-[10px] sm:text-xs text-premium-light">Role</p>
+                <p className="text-xs sm:text-sm text-[#f5f3ee] capitalize">{user.role}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              {user.isActive ? <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" /> : <UserX className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />}
+              <div>
+                <p className="text-[10px] sm:text-xs text-premium-light">Status</p>
+                <p className={`text-xs sm:text-sm ${user.isActive ? 'text-green-400' : 'text-red-400'}`}>
+                  {user.isActive ? 'Active' : 'Disabled'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              {user.emailVerified ? <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" /> : <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />}
+              <div>
+                <p className="text-[10px] sm:text-xs text-premium-light">Email Verified</p>
+                <p className={`text-xs sm:text-sm ${user.emailVerified ? 'text-green-400' : 'text-yellow-400'}`}>
+                  {user.emailVerified ? 'Verified' : 'Not Verified'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
+              <div>
+                <p className="text-[10px] sm:text-xs text-premium-light">Member Since</p>
+                <p className="text-xs sm:text-sm text-[#f5f3ee]">{new Date(user.createdAt).toLocaleDateString()}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0b0f2a]/20">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
+              <div>
+                <p className="text-[10px] sm:text-xs text-premium-light">Last Login</p>
+                <p className="text-xs sm:text-sm text-[#f5f3ee]">
+                  {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
+                </p>
               </div>
             </div>
           </div>
-          <div className="space-y-2 mb-4">
-            {initiatives.length > 0 ? initiatives.map(p => (
-              <div key={p.id} className="flex items-center justify-between p-3 rounded-xl bg-[#0b0f2a]/20">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#f5f3ee]">{p.title}</p>
-                  <p className="text-xs text-premium-light truncate">{p.description.length > 80 ? p.description.slice(0, 80) + '...' : p.description}</p>
-                </div>
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ml-3 ${p.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
-                  {p.status || 'draft'}
-                </span>
-              </div>
-            )) : (
-              <p className="text-sm text-premium-light italic">No initiatives found</p>
-            )}
-          </div>
-          <div className="pt-3 border-t border-[#c8a75e]/10">
-            <Link href="/admin/peace-initiatives"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#c8a75e]/10 hover:bg-[#c8a75e]/20 text-[#c8a75e] rounded-xl transition-colors text-sm font-medium">
-              <ExternalLink className="w-4 h-4" /> Manage Initiatives
-            </Link>
-          </div>
         </div>
 
+        {/* Edit Role & Status */}
+        <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
+          <h2 className="text-base sm:text-lg font-semibold text-[#f5f3ee] mb-4">Edit User</h2>
+          <div className="flex flex-col sm:flex-row gap-4 mb-4">
+            <div className="flex-1">
+              <label className="block text-xs text-premium-light mb-1.5">Role</label>
+              <select
+                value={selectedRole}
+                onChange={e => setSelectedRole(e.target.value)}
+                className="w-full px-3 py-2 text-sm bg-[#0b0f2a]/40 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e]/50"
+              >
+                <option value="user">User</option>
+                <option value="volunteer">Volunteer</option>
+                <option value="editor">Editor</option>
+                <option value="moderator">Moderator</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs text-premium-light mb-1.5">Status</label>
+              <div className="flex items-center gap-3 h-[38px]">
+                <button
+                  onClick={() => setIsActive(!isActive)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    isActive
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  }`}
+                >
+                  {isActive ? <UserCheck className="w-4 h-4" /> : <UserX className="w-4 h-4" />}
+                  {isActive ? 'Active' : 'Disabled'}
+                </button>
+                <span className="text-xs text-premium-light">Click to toggle</span>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c8a75e] text-[#0b0f2a] rounded-xl text-sm font-medium hover:bg-[#d4b56d] transition-colors disabled:opacity-50"
+          >
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
+        </div>
+
+        {/* Role Requests */}
+        <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
+          <h2 className="text-base sm:text-lg font-semibold text-[#f5f3ee] mb-4">Role Requests</h2>
+          <Link
+            href="/admin/role-requests"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#c8a75e]/10 hover:bg-[#c8a75e]/20 text-[#c8a75e] rounded-xl transition-colors text-sm font-medium"
+          >
+            View Role Requests
+          </Link>
+        </div>
       </div>
     </div>
   )

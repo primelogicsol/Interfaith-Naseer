@@ -81,7 +81,7 @@ export default function NewSimilarityTheme() {
             required
             value={formData.title}
             onChange={(e) => handleTitleChange(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="e.g., The Golden Rule"
           />
         </div>
@@ -93,7 +93,7 @@ export default function NewSimilarityTheme() {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={4}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="Describe this similarity theme..."
           />
         </div>
@@ -102,18 +102,18 @@ export default function NewSimilarityTheme() {
 
         <div>
           <label className="block text-sm font-bold text-[#aab0d6] mb-2 uppercase tracking-wider">Color</label>
-          <div className="flex items-center gap-3">
+          <div className="grid grid-cols-4 gap-2">
             <input
               type="color"
               value={formData.color}
               onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-              className="w-12 h-12 rounded-xl border border-[#c8a75e]/20 bg-transparent cursor-pointer"
+              className="col-span-1 w-full h-11 rounded-lg border border-[#c8a75e]/20 bg-transparent cursor-pointer"
             />
             <input
               type="text"
               value={formData.color}
               onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-              className="flex-1 px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
+              className="col-span-3 px-3 py-2 rounded-lg bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono text-sm"
               placeholder="#C8A75E"
             />
           </div>
@@ -126,7 +126,7 @@ export default function NewSimilarityTheme() {
             required
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all font-mono"
             placeholder="golden-rule"
           />
           <p className="text-xs text-premium-light mt-1">URL slug. Auto-generated from title.</p>
@@ -138,7 +138,7 @@ export default function NewSimilarityTheme() {
             type="number"
             value={formData.orderIndex}
             onChange={(e) => setFormData({ ...formData, orderIndex: parseInt(e.target.value) || 0 })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="0"
           />
         </div>
@@ -147,14 +147,14 @@ export default function NewSimilarityTheme() {
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl hover:shadow-premium transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
+            <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {saving ? 'Creating...' : 'Create Theme'}
           </button>
           <Link
             href="/admin/similarity-themes"
-            className="px-6 py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
+            className="px-3 py-2 sm:px-4 sm:py-2.5 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
           >
             Cancel
           </Link>

@@ -164,11 +164,11 @@ export default function TruthPageEditor() {
                   />
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={handleSave} className="flex items-center gap-1.5 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-xl transition-colors text-sm font-medium">
-                    <Check className="w-4 h-4" /> Save
+                  <button onClick={handleSave} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium">
+                    <Check className="w-3 h-3 sm:w-4 sm:h-4" /> Save
                   </button>
-                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1.5 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl transition-colors text-sm font-medium">
-                    <X className="w-4 h-4" /> Cancel
+                  <button onClick={() => setEditingId(null)} className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm font-medium">
+                    <X className="w-3 h-3 sm:w-4 sm:h-4" /> Cancel
                   </button>
                 </div>
               </div>

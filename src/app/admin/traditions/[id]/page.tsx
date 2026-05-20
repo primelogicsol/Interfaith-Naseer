@@ -126,7 +126,7 @@ export default function EditTradition({ params }: { params: Promise<{ id: string
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="e.g., Christianity, Islam, Buddhism"
           />
         </div>
@@ -140,7 +140,7 @@ export default function EditTradition({ params }: { params: Promise<{ id: string
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={6}
-            className="w-full px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+            className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
             placeholder="Describe the tradition, its origins, and key characteristics..."
           />
         </div>
@@ -155,13 +155,13 @@ export default function EditTradition({ params }: { params: Promise<{ id: string
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCoreValue())}
-              className="flex-1 px-4 py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
+              className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
               placeholder="e.g., Compassion, Love, Justice"
             />
             <button
               type="button"
               onClick={addCoreValue}
-              className="px-4 py-3 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/40 text-[#c8a75e] rounded-xl transition-all"
+              className="px-3 py-2 sm:px-4 sm:py-3 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/40 text-[#c8a75e] rounded-xl transition-all text-sm"
             >
               <Plus className="w-5 h-5" />
             </button>
@@ -196,7 +196,7 @@ export default function EditTradition({ params }: { params: Promise<{ id: string
           </button>
           <Link
             href="/admin/traditions"
-            className="px-6 py-3 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
+            className="flex-1 inline-flex items-center justify-center px-2 py-1.5 sm:px-3 sm:py-2 bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] rounded-xl hover:bg-[#0b0f2a]/80 transition-all font-medium text-center"
           >
             Cancel
           </Link>
