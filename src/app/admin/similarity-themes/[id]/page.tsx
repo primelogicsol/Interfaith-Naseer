@@ -113,7 +113,6 @@ export default function EditSimilarityTheme({ params }: { params: Promise<{ id: 
         throw new Error(data.error || 'Failed to update similarity theme')
       }
       router.push('/admin/similarity-themes')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

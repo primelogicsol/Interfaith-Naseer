@@ -121,7 +121,22 @@ function RegisterForm() {
 
     setFormData(prev => ({ ...prev, [field]: value }))
     const errors = validateField(field, value)
-    setFieldErrors(prev => ({ ...prev, ...errors }))
+
+    setFieldErrors(prev => {
+      const next = { ...prev }
+      delete next[field as keyof typeof fieldErrors]
+      Object.assign(next, errors)
+
+      if (field === 'password' && formData.confirmPassword.length > 0) {
+        if (value === formData.confirmPassword) {
+          delete next.confirmPassword
+        } else {
+          next.confirmPassword = 'Passwords do not match'
+        }
+      }
+
+      return next
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -995,36 +995,39 @@ export default function ContentReviewPage() {
                     </p>
                   </div>
 
-                  <div className="flex gap-2 flex-shrink-0">
+                  <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
                     {editingId !== item.id && (
                       <button
                         onClick={() => handleEdit(item)}
                         disabled={editingId !== null || processingId === item.id}
-                        className="px-4 py-2 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/30 text-[#c8a75e] rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        title="Edit"
+                        className="px-2 sm:px-4 py-2 bg-[#c8a75e]/20 hover:bg-[#c8a75e]/30 border border-[#c8a75e]/30 text-[#c8a75e] rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
                       >
-                        <Pencil className="w-4 h-4" />
-                        Edit
+                        <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">Edit</span>
                       </button>
                     )}
                     <button
                       onClick={() => handleApprove(item.type, item.id)}
                       disabled={editingId === item.id || processingId === item.id}
-                      className="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      title="Approve"
+                      className="px-2 sm:px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
                     >
                       {processingId === item.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
                       ) : (
-                        <CheckCircle className="w-4 h-4" />
+                        <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       )}
-                      Approve
+                      <span className="hidden sm:inline">Approve</span>
                     </button>
                     <button
                       onClick={() => openRejectModal(item.type, item.id)}
                       disabled={editingId === item.id || processingId === item.id}
-                      className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      title="Reject"
+                      className="px-2 sm:px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-lg sm:rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2"
                     >
-                      <XCircle className="w-4 h-4" />
-                      Reject
+                      <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Reject</span>
                     </button>
                   </div>
                 </div>

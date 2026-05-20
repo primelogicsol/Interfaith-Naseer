@@ -36,7 +36,6 @@ export default function NewCorePillar() {
       }
 
       router.push('/admin/core-pillars')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setLoading(false)

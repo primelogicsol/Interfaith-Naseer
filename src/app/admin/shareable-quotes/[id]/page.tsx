@@ -77,7 +77,6 @@ export default function EditShareableQuote({ params }: { params: Promise<{ id: s
       }
 
       router.push('/admin/shareable-quotes')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

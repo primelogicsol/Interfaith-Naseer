@@ -59,7 +59,6 @@ export default function EditPeaceInitiative({ params }: { params: Promise<{ id: 
       }
 
       router.push('/admin/peace-initiatives')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

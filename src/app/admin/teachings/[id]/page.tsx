@@ -80,7 +80,6 @@ export default function EditTeaching({ params }: { params: Promise<{ id: string 
       }
 
       router.push('/admin/teachings')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

@@ -30,12 +30,33 @@ function ResetPasswordForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState<{ password?: string; confirmPassword?: string }>({})
 
   useEffect(() => {
     if (!token) {
       setError('Invalid reset link. Please request a new password reset.')
     }
   }, [token])
+
+  const handleChange = (field: 'password' | 'confirmPassword', value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+    setError(null)
+    setFieldErrors(prev => {
+      const next = { ...prev }
+      delete next[field]
+      if (field === 'password' && formData.confirmPassword.length > 0) {
+        if (value === formData.confirmPassword) {
+          delete next.confirmPassword
+        } else {
+          next.confirmPassword = 'Passwords do not match'
+        }
+      }
+      if (field === 'confirmPassword' && value.length > 0 && value !== formData.password) {
+        next.confirmPassword = 'Passwords do not match'
+      }
+      return next
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -120,7 +141,7 @@ function ResetPasswordForm() {
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => handleChange('password', e.target.value)}
                   className="w-full pl-11 pr-12 py-3 text-sm sm:text-base rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
                   placeholder="••••••••"
                 />
@@ -132,6 +153,9 @@ function ResetPasswordForm() {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
+              {fieldErrors.password && (
+                <p className="text-[#e74c3c] text-xs mt-1.5 flex items-center gap-1">{fieldErrors.password}</p>
+              )}
               <p className="text-xs text-[#aab0d6]/70 mt-2">
                 Must be at least 8 characters with uppercase, lowercase, number, and special character
               </p>
@@ -147,11 +171,19 @@ function ResetPasswordForm() {
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={(e) => handleChange('confirmPassword', e.target.value)}
                   className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl bg-[#0b0f2a]/60 border border-[#c8a75e]/20 text-[#f5f3ee] placeholder-[#aab0d6]/50 focus:border-[#c8a75e] focus:ring-2 focus:ring-[#c8a75e]/30 focus:bg-[#0b0f2a]/80 transition-all"
                   placeholder="••••••••"
                 />
               </div>
+              {fieldErrors.confirmPassword ? (
+                <p className="text-[#e74c3c] text-xs mt-1.5 flex items-center gap-1">{fieldErrors.confirmPassword}</p>
+              ) : formData.confirmPassword.length > 0 && formData.password === formData.confirmPassword ? (
+                <p className="text-[#27AE60] text-xs mt-1.5 flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3" />
+                  Passwords match
+                </p>
+              ) : null}
             </div>
 
             {error && (

@@ -49,7 +49,6 @@ export default function NewSimilarityTheme() {
       }
 
       router.push('/admin/similarity-themes')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

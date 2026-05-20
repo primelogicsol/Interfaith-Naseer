@@ -34,7 +34,6 @@ export default function NewTradition() {
       }
 
       router.push('/admin/traditions')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setLoading(false)

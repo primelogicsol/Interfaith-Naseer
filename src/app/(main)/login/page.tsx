@@ -60,7 +60,13 @@ function LoginForm() {
   const handleChange = (field: 'email' | 'password', value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     const errors = validateField(field, value)
-    setFieldErrors(prev => ({ ...prev, ...errors }))
+    setFieldErrors(prev => {
+      const next = { ...prev }
+      delete next[field]
+      Object.assign(next, errors)
+      return next
+    })
+    setError(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,7 +119,6 @@ function LoginForm() {
       } else {
         router.push(redirect.startsWith('/admin') ? '/' : redirect)
       }
-      router.refresh()
     } catch (err) {
       setError('An error occurred. Please try again.')
       setIsSubmitting(false)

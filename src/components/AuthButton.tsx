@@ -59,7 +59,6 @@ export default function AuthButton() {
       setUser(null)
       setShowDropdown(false)
       router.push('/')
-      router.refresh()
     } catch (error) {
       console.error('Logout error:', error)
     }

@@ -58,7 +58,6 @@ export default function EditTradition({ params }: { params: Promise<{ id: string
       }
 
       router.push('/admin/traditions')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

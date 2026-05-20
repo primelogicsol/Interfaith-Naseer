@@ -63,7 +63,6 @@ export default function NewTeaching() {
       }
 
       router.push('/admin/teachings')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

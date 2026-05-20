@@ -62,7 +62,6 @@ export default function EditCorePillar({ params }: { params: Promise<{ id: strin
       }
 
       router.push('/admin/core-pillars')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

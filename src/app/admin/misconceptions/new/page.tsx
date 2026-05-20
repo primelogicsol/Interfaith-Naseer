@@ -59,7 +59,6 @@ export default function NewMisconception() {
       }
 
       router.push('/admin/misconceptions')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)

@@ -34,7 +34,6 @@ export default function NewPeaceInitiative() {
       }
 
       router.push('/admin/peace-initiatives')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setLoading(false)

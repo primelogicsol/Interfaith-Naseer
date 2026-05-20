@@ -63,7 +63,6 @@ export default function NewSacredText() {
       }
 
       router.push('/admin/sacred-texts')
-      router.refresh()
     } catch (err: any) {
       setError(err.message)
       setSaving(false)
