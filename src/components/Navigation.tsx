@@ -90,7 +90,7 @@ export default function Navigation() {
 
           {/* Desktop Right Section - Anchored via ml-auto */}
           <div className="hidden lg:flex items-center gap-1 xl:gap-1.5 ml-auto">
-            <Link href="/join" className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 xl:px-4 py-1.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-lg hover:shadow-premium transition-all whitespace-nowrap">
+            <Link href="/join" className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 xl:px-4 py-2.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-lg hover:shadow-premium transition-all whitespace-nowrap">
               <Sparkles className="w-3.5 h-3.5" />
               Join the Movement
             </Link>

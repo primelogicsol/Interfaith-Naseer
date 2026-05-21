@@ -56,6 +56,7 @@ interface DashboardStats {
   approachCards: number
   pageContent: number
   founderSections: number
+  similarityTeachings: number
 }
 
 interface StatCard {

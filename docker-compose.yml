@@ -42,6 +42,9 @@ services:
       -c "
         echo '⏳ Waiting for database...' &&
         sleep 3 &&
+        echo '📋 Syncing Prisma schema...' &&
+        npx prisma db push --accept-data-loss &&
+        echo '✅ Schema synced!' &&
         echo '📋 Checking if content data exists...' &&
         DATA_EXISTS=$$(PGPASSWORD=\"${POSTGRES_PASSWORD}\" psql -h db -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-interfaith_db} -t -c \"SELECT EXISTS (SELECT 1 FROM traditions LIMIT 1);\" 2>/dev/null | tr -d '[:space:]') &&
         if [ \"$$DATA_EXISTS\" != \"t\" ]; then
@@ -59,10 +62,7 @@ services:
         else
           echo '⏭️  Content data already exists — skipping SQL files';
         fi &&
-        echo '📋 Syncing Prisma schema...' &&
-        npx prisma db push --accept-data-loss &&
-        echo '✅ Schema synced!' &&
-        echo '🌱 Seeding admin accounts...' &&
+        echo '🌱 Seeding admin accounts and remaining data...' &&
         npx prisma db seed &&
         echo '✅ All migrations and seeds complete!'
       "
