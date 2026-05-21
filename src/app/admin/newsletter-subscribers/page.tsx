@@ -2,17 +2,20 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Mail, Calendar, CheckCircle, XCircle, Download } from 'lucide-react'
+import { Mail, Calendar, CheckCircle, XCircle, Download, User } from 'lucide-react'
 
 interface NewsletterSubscriber {
   id: string
   email: string
   name: string | null
-  subscription_topics: string[]
-  subscribed_at: string
-  is_active: boolean
-  confirmed_at: string | null
-  last_email_sent: string | null
+  subscriptionTopics: string[]
+  frequency: string | null
+  subscribedAt: string
+  isActive: boolean | null
+  confirmedAt: string | null
+  lastEmailSent: string | null
+  source: string | null
+  user: { id: string; email: string; fullName: string } | null
 }
 
 export default function NewsletterSubscribersManagement() {
@@ -45,10 +48,10 @@ export default function NewsletterSubscribersManagement() {
     const rows = subscribers.map(s => [
       s.email,
       s.name || 'N/A',
-      s.subscription_topics.join('; '),
-      s.is_active ? 'Active' : 'Inactive',
-      new Date(s.subscribed_at).toLocaleDateString(),
-      s.confirmed_at ? 'Yes' : 'No'
+      (s.subscriptionTopics || []).join('; '),
+      s.isActive ? 'Active' : 'Inactive',
+      new Date(s.subscribedAt).toLocaleDateString(),
+      s.confirmedAt ? 'Yes' : 'No'
     ])
 
     const csv = [headers, ...rows].map(row => row.join(',')).join('\n')
@@ -61,8 +64,8 @@ export default function NewsletterSubscribersManagement() {
     URL.revokeObjectURL(url)
   }
 
-  const activeCount = subscribers.filter(s => s.is_active).length
-  const confirmedCount = subscribers.filter(s => s.confirmed_at).length
+  const activeCount = subscribers.filter(s => s.isActive).length
+  const confirmedCount = subscribers.filter(s => s.confirmedAt).length
 
   if (loading) {
     return (
@@ -119,6 +122,7 @@ export default function NewsletterSubscribersManagement() {
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Email</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Name</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Account</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Topics</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Status</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#f5f3ee]">Subscribed</th>
@@ -132,18 +136,28 @@ export default function NewsletterSubscribersManagement() {
                         <Mail className="w-4 h-4 text-premium-light" />
                         <a
                           href={`mailto:${subscriber.email}`}
-                          className="text-[#f5f3ee] hover:text-[#c8a75e] transition-colors truncate  block"
+                          className="text-[#f5f3ee] hover:text-[#c8a75e] transition-colors truncate max-w-[200px] block"
                         >
                           {subscriber.email}
                         </a>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-[#f5f3ee] truncate ">{subscriber.name || '-'}</div>
+                      <div className="text-[#f5f3ee] truncate max-w-[150px]">{subscriber.name || '-'}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {subscriber.user ? (
+                        <div className="flex items-center gap-1.5 text-sm">
+                          <User className="w-4 h-4 text-premium-light" />
+                          <span className="text-[#f5f3ee] truncate max-w-[150px] block">{subscriber.user.fullName}</span>
+                        </div>
+                      ) : (
+                        <span className="text-premium-light text-sm">-</span>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
-                        {(subscriber.subscription_topics || []).map((topic, idx) => (
+                        {(subscriber.subscriptionTopics || []).map((topic, idx) => (
                           <span
                             key={idx}
                             className="px-2 py-1 bg-[#0b0f2a]/20 rounded text-xs text-premium-light"
@@ -155,7 +169,7 @@ export default function NewsletterSubscribersManagement() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        {subscriber.is_active ? (
+                        {subscriber.isActive ? (
                           <span className="flex items-center gap-1 text-green-400 text-sm">
                             <CheckCircle className="w-4 h-4" />
                             Active
@@ -171,7 +185,7 @@ export default function NewsletterSubscribersManagement() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-premium-light text-sm">
                         <Calendar className="w-4 h-4" />
-                        {new Date(subscriber.subscribed_at).toLocaleDateString()}
+                        {new Date(subscriber.subscribedAt).toLocaleDateString()}
                       </div>
                     </td>
                   </tr>

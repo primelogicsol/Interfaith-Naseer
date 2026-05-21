@@ -32,6 +32,7 @@ export default function FaithAssessment() {
   const [answers, setAnswers] = useState<Answer[]>([])
   const [showResults, setShowResults] = useState(false)
   const [results, setResults] = useState<any>(null)
+  const [existingResult, setExistingResult] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [country, setCountry] = useState('')
 
@@ -44,6 +45,15 @@ export default function FaithAssessment() {
           const data = await response.json()
           if (data.user) {
             setUser(data.user)
+            // Fetch existing assessment result
+            const res = await fetch('/api/assessment/results/mine')
+            if (res.ok) {
+              const mine = await res.json()
+              if (mine.result) {
+                setExistingResult(mine.result)
+                setShowResults(true)
+              }
+            }
           } else {
             window.location.href = '/login?redirect=/assessment'
             return
@@ -209,6 +219,37 @@ export default function FaithAssessment() {
     setShowResults(true)
   }
 
+  // Load existing result for display
+  useEffect(() => {
+    if (existingResult && !answers.length) {
+      const catMap: Record<string, string> = {
+        peace_seeker: 'Peace Seeker & Bridge Builder',
+        bridge_builder: 'Emerging Bridge Builder',
+        needs_reflection: 'Opportunity for Reflection',
+      }
+      const colorMap: Record<string, string> = {
+        peace_seeker: '#27AE60',
+        bridge_builder: '#C8A75E',
+        needs_reflection: '#D4A07B',
+      }
+      setResults({
+        peace_score: existingResult.peace_score || 0,
+        tolerance_score: existingResult.tolerance_score || 0,
+        compassion_score: existingResult.compassion_score || 0,
+        understanding_score: existingResult.understanding_score || 0,
+        overall_score: existingResult.overall_score || 0,
+        percentage: existingResult.overall_score ? Math.round((existingResult.overall_score / (20 * 5)) * 100) : 0,
+        result_category: existingResult.result_category || '',
+        title: catMap[existingResult.result_category as string] || 'Assessment Result',
+        color: colorMap[existingResult.result_category as string] || '#C8A75E',
+        max_peace_score: 25,
+        max_tolerance_score: 25,
+        max_compassion_score: 25,
+        max_understanding_score: 25,
+      })
+    }
+  }, [existingResult])
+
   const resetAssessment = () => {
     setCurrentQuestion(0)
     setAnswers([])
@@ -237,7 +278,7 @@ export default function FaithAssessment() {
             <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-4 sm:mb-6">
               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
               <span className="text-xs sm:text-sm font-semibold text-[#D4A07B]">
-                Your Results
+                {existingResult ? 'Your Previous Result' : 'Your Results'}
               </span>
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl heading-premium text-[#f5f3ee] mb-3 sm:mb-4 px-4">{results.title}</h1>
@@ -355,14 +396,23 @@ export default function FaithAssessment() {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-            <button onClick={resetAssessment} className="btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
-              Retake Assessment
-            </button>
-            <a href="/join" className="btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
-              Join Our Community
-            </a>
-          </div>
+          {showResults && results && (
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+              {existingResult && (
+                <button onClick={resetAssessment} className="btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
+                  Retake Assessment
+                </button>
+              )}
+              {!existingResult && (
+                <button onClick={resetAssessment} className="btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
+                  Retake Assessment
+                </button>
+              )}
+              <a href="/join" className="btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
+                Join Our Community
+              </a>
+            </div>
+          )}
         </div>
       </div>
     )

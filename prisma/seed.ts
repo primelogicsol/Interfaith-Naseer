@@ -1015,6 +1015,12 @@ Grassroots Empowerment — We train local leaders to facilitate interfaith work 
     { pageKey: 'assessment', sectionKey: 'hero_heading_1', title: 'Heart & Faith', content: null, orderIndex: 1 },
     { pageKey: 'assessment', sectionKey: 'hero_heading_2', title: 'Assessment', content: null, orderIndex: 2 },
     { pageKey: 'assessment', sectionKey: 'hero_subtitle', title: null, content: 'A thoughtful journey of self-reflection to discover the universal values that unite us all.', orderIndex: 3 },
+    // Contact Us
+    { pageKey: 'contact-us', sectionKey: 'hero_badge', title: 'Get in Touch', content: null, orderIndex: 0 },
+    { pageKey: 'contact-us', sectionKey: 'hero_heading_1', title: 'Contact Us', content: null, orderIndex: 1 },
+    { pageKey: 'contact-us', sectionKey: 'hero_subtitle', title: null, content: 'Have a question, suggestion, or want to collaborate? We\'d love to hear from you.', orderIndex: 2 },
+    { pageKey: 'contact-us', sectionKey: 'form_heading', title: 'Send Us a Message', content: null, orderIndex: 3 },
+    { pageKey: 'contact-us', sectionKey: 'form_subtitle', title: null, content: 'Fill out the form below and we\'ll get back to you as soon as possible.', orderIndex: 4 },
   ]
 
   for (const section of pageSections) {

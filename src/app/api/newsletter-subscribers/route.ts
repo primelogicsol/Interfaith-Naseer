@@ -108,17 +108,14 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
         orderBy: { subscribedAt: 'desc' },
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          subscriptionTopics: true,
-          frequency: true,
-          subscribedAt: true,
-          isActive: true,
-          source: true,
-          confirmedAt: true,
-          lastEmailSent: true,
+        include: {
+          user: {
+            select: {
+              id: true,
+              email: true,
+              fullName: true,
+            }
+          }
         },
       }),
       prisma.newsletterSubscriber.count({ where }),

@@ -12,6 +12,7 @@ const PAGES: { label: string; href: string; pageKey: string }[] = [
   { label: 'About', href: '/admin/pages/about', pageKey: 'about' },
   { label: 'Peace', href: '/admin/peace', pageKey: 'peace' },
   { label: 'Peace Initiatives', href: '/admin/pages/peace-initiatives', pageKey: 'peace-initiatives' },
+  { label: 'Contact Us', href: '/admin/pages/contact-us', pageKey: 'contact-us' },
 ]
 
 export default function PageContentOverview() {

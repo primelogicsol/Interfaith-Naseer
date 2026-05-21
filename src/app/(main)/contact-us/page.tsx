@@ -23,6 +23,8 @@ export default function ContactUsPage() {
   const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Get in Touch'
   const heroHeading = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Contact Us'
   const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
+  const formHeading = pageContent.find(p => p.sectionKey === 'form_heading')?.title || 'Send Us a Message'
+  const formSubtitle = pageContent.find(p => p.sectionKey === 'form_subtitle')?.content || ''
 
   if (loading) {
     return (
@@ -77,7 +79,7 @@ export default function ContactUsPage() {
           </div>
 
           <div className="lg:col-span-2">
-            <ContactForm />
+            <ContactForm heading={formHeading} subtitle={formSubtitle} />
           </div>
         </div>
       </div>
@@ -96,7 +98,7 @@ function Globe({ className }: { className?: string }) {
   )
 }
 
-function ContactForm() {
+function ContactForm({ heading, subtitle }: { heading: string; subtitle: string }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
@@ -162,6 +164,10 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="glass-effect rounded-xl p-5 sm:p-8 border border-[#c8a75e]/20 space-y-5 sm:space-y-6">
+      <div className="text-center mb-2">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#f5f3ee]">{heading}</h2>
+        {subtitle && <p className="text-sm text-premium-light mt-1">{subtitle}</p>}
+      </div>
       <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
         <div>
             <label className="block text-xs sm:text-sm font-semibold text-[#f5f3ee] mb-2">Your Name</label>

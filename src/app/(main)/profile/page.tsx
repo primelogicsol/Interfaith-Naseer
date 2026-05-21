@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, Mail, Shield, Camera, Save, Loader2, Clock, CheckCircle, XCircle, Lock, Key, ChevronDown, AlertTriangle } from 'lucide-react'
+import { User, Mail, Shield, Camera, Save, Loader2, Clock, CheckCircle, XCircle, Lock, Key, ChevronDown, AlertTriangle, Users, FileText } from 'lucide-react'
 import Image from 'next/image'
 
 interface UserData {
@@ -35,7 +35,9 @@ export default function ProfilePage() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  // Role request states
+  // Assessment result states
+  const [assessmentResult, setAssessmentResult] = useState<any>(null)
+  const [loadingAssessment, setLoadingAssessment] = useState(true)
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([])
   const [showRoleRequestForm, setShowRoleRequestForm] = useState(false)
   const [requestedRole, setRequestedRole] = useState('editor')
@@ -68,6 +70,8 @@ export default function ProfilePage() {
 
       // Load role requests
       loadRoleRequests()
+      // Load assessment result
+      loadAssessment()
     } catch (error) {
       router.push('/login?redirect=/profile')
     } finally {
@@ -84,6 +88,18 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error('Error loading role requests:', error)
+    }
+  }
+
+  async function loadAssessment() {
+    try {
+      const res = await fetch('/api/assessment/results/mine')
+      if (res.ok) {
+        const data = await res.json()
+        setAssessmentResult(data.result)
+      }
+    } catch {} finally {
+      setLoadingAssessment(false)
     }
   }
 
@@ -436,6 +452,60 @@ export default function ProfilePage() {
           {/* Contact Messages */}
           <ContactMessagesSection />
 
+          {/* User Submissions */}
+          <UserSubmissionsSection />
+
+          {/* Assessment Result */}
+          {assessmentResult && (
+            <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20 mt-6">
+              <h3 className="text-base font-bold text-[#f5f3ee] mb-4 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#c8a75e]" />
+                Faith Assessment
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10">
+                  <span className="text-xs text-premium-light">Overall Score</span>
+                  <span className="text-sm font-bold text-green-400">{assessmentResult.overall_score || 0} pts</span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10">
+                  <span className="text-xs text-premium-light">Category</span>
+                  <span className="px-2 py-0.5 bg-[#c8a75e]/20 text-[#c8a75e] rounded-lg text-xs font-medium capitalize">
+                    {(assessmentResult.result_category || '').replace(/_/g, ' ')}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-center">
+                    <p className="text-xs text-emerald-400 font-bold">{assessmentResult.peace_score || 0}</p>
+                    <p className="text-[10px] text-premium-light">Peace</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-center">
+                    <p className="text-xs text-blue-400 font-bold">{assessmentResult.tolerance_score || 0}</p>
+                    <p className="text-[10px] text-premium-light">Tolerance</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-center">
+                    <p className="text-xs text-rose-400 font-bold">{assessmentResult.compassion_score || 0}</p>
+                    <p className="text-[10px] text-premium-light">Compassion</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-violet-500/10 border border-violet-500/20 text-center">
+                    <p className="text-xs text-violet-400 font-bold">{assessmentResult.understanding_score || 0}</p>
+                    <p className="text-[10px] text-premium-light">Understanding</p>
+                  </div>
+                </div>
+                <a href="/assessment" className="block text-center text-xs text-[#c8a75e] hover:underline mt-2">
+                  Retake Assessment →
+                </a>
+              </div>
+            </div>
+          )}
+          {!assessmentResult && !loadingAssessment && (
+            <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20 mt-6 text-center">
+              <p className="text-xs text-premium-light mb-2">No assessment taken yet</p>
+              <a href="/assessment" className="text-xs text-[#c8a75e] hover:underline font-medium">
+                Take Faith Assessment →
+              </a>
+            </div>
+          )}
+
         </div>
 
         {/* Edit Form */}
@@ -702,6 +772,96 @@ function ContactMessagesSection() {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  )
+}
+
+function UserSubmissionsSection() {
+  const [submissions, setSubmissions] = useState<{
+    movementMember: {
+      id: string
+      fullName: string
+      email: string
+      country: string | null
+      interests: string[]
+      traditionAffiliation: string | null
+      wantsNewsletter: boolean | null
+      wantsVolunteer: boolean | null
+      createdAt: string
+    } | null
+    newsletterSubscriber: {
+      id: string
+      email: string
+      name: string | null
+      subscriptionTopics: string[]
+      frequency: string | null
+      subscribedAt: string
+      isActive: boolean | null
+    } | null
+  } | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch('/api/user/submissions')
+        if (res.ok) setSubmissions(await res.json())
+      } catch {} finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
+  if (loading) return null
+  if (!submissions) return null
+  if (!submissions.movementMember && !submissions.newsletterSubscriber) return null
+
+  return (
+    <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20 mt-6">
+      <h3 className="text-base font-bold text-[#f5f3ee] mb-4 flex items-center gap-2">
+        <FileText className="w-5 h-5 text-[#c8a75e]" />
+        My Submissions
+      </h3>
+      <div className="space-y-4">
+        {submissions.movementMember && (
+          <div className="p-3 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10">
+            <h4 className="text-xs font-bold text-[#f5f3ee] mb-2 flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-[#c8a75e]" />
+              Movement Member
+            </h4>
+            <div className="space-y-1.5 text-xs text-premium-light">
+              <p>Joined: {new Date(submissions.movementMember.createdAt).toLocaleDateString()}</p>
+              {submissions.movementMember.country && <p>Country: {submissions.movementMember.country}</p>}
+              {submissions.movementMember.traditionAffiliation && (
+                <p>Tradition: {submissions.movementMember.traditionAffiliation}</p>
+              )}
+              {submissions.movementMember.interests.length > 0 && (
+                <p>Interests: {submissions.movementMember.interests.join(', ')}</p>
+              )}
+            </div>
+          </div>
+        )}
+        {submissions.newsletterSubscriber && (
+          <div className="p-3 rounded-xl bg-[#0b0f2a]/30 border border-[#c8a75e]/10">
+            <h4 className="text-xs font-bold text-[#f5f3ee] mb-2 flex items-center gap-1.5">
+              <Mail className="w-4 h-4 text-[#c8a75e]" />
+              Newsletter Subscription
+            </h4>
+            <div className="space-y-1.5 text-xs text-premium-light">
+              <p>Email: {submissions.newsletterSubscriber.email}</p>
+              <p>Subscribed: {new Date(submissions.newsletterSubscriber.subscribedAt).toLocaleDateString()}</p>
+              <p>Status: {submissions.newsletterSubscriber.isActive ? 'Active' : 'Inactive'}</p>
+              {submissions.newsletterSubscriber.frequency && (
+                <p>Frequency: {submissions.newsletterSubscriber.frequency}</p>
+              )}
+              {submissions.newsletterSubscriber.subscriptionTopics.length > 0 && (
+                <p>Topics: {submissions.newsletterSubscriber.subscriptionTopics.join(', ')}</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

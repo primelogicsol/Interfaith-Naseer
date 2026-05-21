@@ -2,18 +2,21 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Mail, Calendar, CheckCircle, Download, Users } from 'lucide-react'
+import { Mail, Calendar, CheckCircle, Download, Users, User } from 'lucide-react'
 
 interface MovementMember {
   id: string
-  full_name: string
+  fullName: string
   email: string
-  tradition_affiliation: string | null
+  country: string | null
+  interests: string[]
+  traditionAffiliation: string | null
   message: string | null
-  how_heard: string | null
-  wants_newsletter: boolean
-  wants_volunteer: boolean
-  created_at: string
+  howHeard: string | null
+  wantsNewsletter: boolean | null
+  wantsVolunteer: boolean | null
+  createdAt: string
+  user: { id: string; email: string; fullName: string } | null
 }
 
 export default function MovementMembersManagement() {
@@ -42,15 +45,17 @@ export default function MovementMembersManagement() {
   }
 
   function exportToCSV() {
-    const headers = ['Name', 'Email', 'Tradition', 'How Heard', 'Newsletter', 'Volunteer', 'Date Joined']
+    const headers = ['Name', 'Email', 'Country', 'Interests', 'Tradition', 'How Heard', 'Newsletter', 'Volunteer', 'Date Joined']
     const rows = members.map(m => [
-      m.full_name,
+      m.fullName,
       m.email,
-      m.tradition_affiliation || 'N/A',
-      m.how_heard || 'N/A',
-      m.wants_newsletter ? 'Yes' : 'No',
-      m.wants_volunteer ? 'Yes' : 'No',
-      new Date(m.created_at).toLocaleDateString()
+      m.country || 'N/A',
+      (m.interests || []).join('; ') || 'N/A',
+      m.traditionAffiliation || 'N/A',
+      m.howHeard || 'N/A',
+      m.wantsNewsletter ? 'Yes' : 'No',
+      m.wantsVolunteer ? 'Yes' : 'No',
+      new Date(m.createdAt).toLocaleDateString()
     ])
 
     const csv = [headers, ...rows].map(row => row.join(',')).join('\n')
@@ -99,27 +104,33 @@ export default function MovementMembersManagement() {
           {members.map((member) => (
             <div key={member.id} className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6">
               <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="text-base sm:text-xl font-semibold text-[#f5f3ee] mb-2 truncate">{member.full_name}</h3>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-xl font-semibold text-[#f5f3ee] mb-2 truncate">{member.fullName}</h3>
                   <div className="flex items-center gap-2 text-premium-light mb-2">
                     <Mail className="w-4 h-4" />
                     <a href={`mailto:${member.email}`} className="hover:text-[#c8a75e] transition-colors truncate">
                       {member.email}
                     </a>
                   </div>
+                  {member.user && (
+                    <div className="flex items-center gap-2 text-premium-light mb-2 text-sm">
+                      <User className="w-4 h-4" />
+                      <span>Account: {member.user.fullName} ({member.user.email})</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2 text-premium-light text-sm">
                     <Calendar className="w-4 h-4" />
-                    Joined {new Date(member.created_at).toLocaleDateString()}
+                    Joined {new Date(member.createdAt).toLocaleDateString()}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  {member.wants_newsletter && (
+                <div className="flex gap-2 flex-shrink-0">
+                  {member.wantsNewsletter && (
                     <div className="px-3 py-1 bg-green-500/20 text-green-400 rounded-xl text-sm flex items-center gap-1">
                       <CheckCircle className="w-3 h-3" />
                       Newsletter
                     </div>
                   )}
-                  {member.wants_volunteer && (
+                  {member.wantsVolunteer && (
                     <div className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-xl text-sm flex items-center gap-1">
                       <CheckCircle className="w-3 h-3" />
                       Volunteer
@@ -128,17 +139,38 @@ export default function MovementMembersManagement() {
                 </div>
               </div>
 
-              {member.tradition_affiliation && (
-                <div className="mb-3">
-                  <span className="text-premium-light text-sm">Tradition: </span>
-                  <span className="text-[#f5f3ee] truncate">{member.tradition_affiliation}</span>
+              {(member.country || (member.interests && member.interests.length > 0)) && (
+                <div className="flex flex-wrap gap-4 mb-3 text-sm">
+                  {member.country && (
+                    <div>
+                      <span className="text-premium-light">Country: </span>
+                      <span className="text-[#f5f3ee]">{member.country}</span>
+                    </div>
+                  )}
+                  {member.interests && member.interests.length > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-premium-light">Interests: </span>
+                      {member.interests.map((interest, idx) => (
+                        <span key={idx} className="px-2 py-0.5 bg-[#c8a75e]/10 text-[#c8a75e] rounded text-xs">
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
-              {member.how_heard && (
+              {member.traditionAffiliation && (
+                <div className="mb-3">
+                  <span className="text-premium-light text-sm">Tradition: </span>
+                  <span className="text-[#f5f3ee] truncate">{member.traditionAffiliation}</span>
+                </div>
+              )}
+
+              {member.howHeard && (
                 <div className="mb-3">
                   <span className="text-premium-light text-sm">How they heard: </span>
-                  <span className="text-[#f5f3ee] truncate">{member.how_heard}</span>
+                  <span className="text-[#f5f3ee] truncate">{member.howHeard}</span>
                 </div>
               )}
 

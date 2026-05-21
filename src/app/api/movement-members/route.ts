@@ -7,22 +7,28 @@ export async function POST(request: NextRequest) {
     const {
       fullName,
       email,
+      country,
+      interests,
       traditionAffiliation,
       message,
       howHeard,
       wantsNewsletter,
-      wantsVolunteer
+      wantsVolunteer,
+      userId
     } = body
 
     const member = await prisma.movementMember.create({
       data: {
         fullName,
         email,
-        traditionAffiliation,
-        message,
-        howHeard,
+        country: country || null,
+        interests: interests || [],
+        traditionAffiliation: traditionAffiliation || null,
+        message: message || null,
+        howHeard: howHeard || null,
         wantsNewsletter: wantsNewsletter || false,
-        wantsVolunteer: wantsVolunteer || false
+        wantsVolunteer: wantsVolunteer || false,
+        userId: userId || null,
       }
     })
 
@@ -41,6 +47,15 @@ export async function GET() {
     const members = await prisma.movementMember.findMany({
       orderBy: {
         createdAt: 'desc'
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            fullName: true,
+          }
+        }
       }
     })
 
