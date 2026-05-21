@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Heart, Pencil, X, Check, ExternalLink } from 'lucide-react'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 interface WisdomItem {
   id: string
@@ -128,6 +129,8 @@ export default function PeaceAdmin() {
 
       <div className="grid gap-6">
 
+         <ContentSectionEditor pageKey="peace" />
+
         {/* The Path from Wisdom to Action */}
         <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
           <div className="space-y-3">
@@ -201,6 +204,8 @@ export default function PeaceAdmin() {
         </div>
 
       </div>
+
+     
     </div>
   )
 }

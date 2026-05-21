@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FileText, Heart, Users, Pencil, X, Check, Plus, Edit, Trash2, Save, Eye, Globe, BookHeart, Sparkles, Target, ArrowLeft } from 'lucide-react'
 import { IconPicker } from '@/components/admin/IconPicker'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 const VALUE_ICON_MAP: Record<string, React.ElementType> = {
   Heart, Globe, BookHeart, Users, Sparkles, Target,
@@ -504,6 +505,8 @@ export default function AboutPageEditor() {
           )}
         </div>
       </div>
+
+      <ContentSectionEditor pageKey="about" />
     </div>
   )
 }

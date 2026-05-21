@@ -28,9 +28,16 @@ interface ApproachCard {
   orderIndex: number
 }
 
+interface PageContentItem {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function OurApproach() {
   const [sections, setSections] = useState<ApproachContentItem[]>([])
   const [cards, setCards] = useState<ApproachCard[]>([])
+  const [pageContent, setPageContent] = useState<PageContentItem[]>([])
   const [loading, setLoading] = useState(true)
   const [sectionPages, setSectionPages] = useState<Record<string, number>>({})
 
@@ -38,14 +45,21 @@ export default function OurApproach() {
     Promise.all([
       fetch('/api/approach-content').then(res => res.json()),
       fetch('/api/approach-cards').then(res => res.json()),
+      fetch('/api/page-content?pageKey=approach').then(res => res.ok ? res.json() : []),
     ])
-      .then(([contentData, cardsData]) => {
+      .then(([contentData, cardsData, pageContentData]) => {
         setSections(contentData)
         setCards(cardsData)
+        setPageContent(pageContentData)
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Our Methodology'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Our'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Approach to Unity'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   const getSection = (key: string) => sections.find(s => s.sectionKey === key)
 
@@ -115,19 +129,20 @@ export default function OurApproach() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <LucideIcons.Target className="w-4 h-4 sm:w-5 sm:h-5 text-[#d4b56d]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Our Methodology
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Our
-            <span className="block text-[#C8A75E] mt-2">Approach to Unity</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            A proven methodology combining ancient wisdom with modern engagement strategies
-            to build lasting bridges across faith traditions.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

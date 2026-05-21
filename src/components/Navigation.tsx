@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Sparkles, Menu, X } from 'lucide-react'
@@ -11,6 +11,16 @@ import AuthButton from './AuthButton'
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const isActive = (path: string) => {
     if (path === '/' && pathname === '/') return true
@@ -21,20 +31,42 @@ export default function Navigation() {
   const closeMobileMenu = () => setMobileMenuOpen(false)
 
   return (
-    <header className="nav-premium fixed w-full z-50">
-      <nav className="container mx-auto px-4 sm:px-6 py-3 md:py-5">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-end gap-2 group" onClick={closeMobileMenu}>
-            <Image className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12' src={logo} alt='Interfaith Peace Bridge' />
-            <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl heading-premium text-[#C8A75E]">
-              Interfaith Peace Bridge
-            </span>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out ${
+      isScrolled
+        ? 'bg-[#0B0F2A]/95 backdrop-blur-2xl border-b border-[#C8A75E]/20 shadow-xl'
+        : 'bg-[#0B0F2A]/0'
+    }`}>
+      <nav className="mx-auto max-w-6xl px-4 sm:px-6 transition-all duration-300 ease-in-out">
+        <div className={`flex items-center transition-all duration-300 ease-in-out ${
+          isScrolled ? 'py-1.5' : 'py-3 md:py-5'
+        }`}>
+          {/* Brand Left Section - Anchored via mr-auto */}
+          <Link href="/" className="flex items-center gap-1 sm:gap-1.5 group mr-auto" onClick={closeMobileMenu}>
+            <div className={`transition-transform duration-300 ease-in-out ${isScrolled ? 'scale-75' : 'scale-100'}`}>
+              <Image className='w-7 h-7 sm:w-9 sm:h-9' src={logo} alt='Interfaith Peace Bridge' />
+            </div>
+            <div className="flex items-center h-6 sm:h-7">
+              <span className={`whitespace-nowrap transition-all duration-300 ease-in-out font-bold text-[#C8A75E] ${
+                isScrolled
+                  ? 'opacity-0 pointer-events-none absolute'
+                  : 'opacity-100 relative text-xs sm:text-sm lg:text-base xl:text-lg'
+              }`}>
+                Interfaith Peace Bridge
+              </span>
+              <span className={`whitespace-nowrap transition-all duration-300 ease-in-out font-extrabold tracking-wider text-[#C8A75E] ${
+                isScrolled
+                  ? 'opacity-100 relative text-xs sm:text-sm'
+                  : 'opacity-0 pointer-events-none absolute'
+              }`}>
+                IFPB
+              </span>
+            </div>
           </Link>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex flex-1 items-center justify-center space-x-1">
+          {/* Desktop Navigation Links - Dynamically positioned between components */}
+          <div className="hidden lg:flex items-center gap-0.5 xl:gap-1 px-4">
             <NavLink href="/mission" active={isActive('/mission')}>
-              Our Mission
+              Mission
             </NavLink>
             <NavLink href="/teachings" active={isActive('/teachings')}>
               Teachings
@@ -49,24 +81,24 @@ export default function Navigation() {
               Traditions
             </NavLink>
             <NavLink href="/peace" active={isActive('/peace')}>
-              Peace Work
+              Peace
             </NavLink>
             <NavLink href="/share-quotes" active={isActive('/share-quotes')}>
               Share
             </NavLink>
           </div>
 
-          {/* Desktop Right */}
-          <div className="hidden lg:flex items-center space-x-3">
-            <Link href="/join" className="btn-secondarys inline-flex items-center text-sm px-5 py-2.5">
-              <Sparkles className="w-4 h-4 mr-2" />
+          {/* Desktop Right Section - Anchored via ml-auto */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-1.5 ml-auto">
+            <Link href="/join" className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 xl:px-4 py-1.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-lg hover:shadow-premium transition-all whitespace-nowrap">
+              <Sparkles className="w-3.5 h-3.5" />
               Join the Movement
             </Link>
             <AuthButton />
           </div>
 
-          {/* Mobile: AuthButton + Menu Button */}
-          <div className="flex items-center gap-1 lg:hidden">
+          {/* Mobile UI Controls - Anchored via ml-auto */}
+          <div className="flex items-center gap-1 lg:hidden ml-auto">
             <div className="flex items-center justify-center">
               <AuthButton />
             </div>
@@ -84,9 +116,11 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Flyout Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 space-y-2 animate-fadeIn">
+          <div className={`lg:hidden space-y-2 animate-fadeIn transition-all duration-300 ease-in-out ${
+            isScrolled ? 'pb-2' : 'pb-4'
+          }`}>
             <MobileNavLink href="/mission" active={isActive('/mission')} onClick={closeMobileMenu}>
               Our Mission
             </MobileNavLink>
@@ -127,7 +161,7 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
   return (
     <Link
       href={href}
-      className={`relative px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+      className={`relative px-1.5 xl:px-2 py-1.5 rounded-md font-medium transition-all duration-300 text-xs xl:text-sm ${
         active
           ? 'text-[#c8a75e]'
           : 'text-[#f5f3ee]/80 hover:text-[#c8a75e]'

@@ -18,13 +18,18 @@ interface ShareableQuote {
   }
 }
 
-const backgroundColors = {
+const GRADIENT_PRESETS: Record<string, string> = {
   'gradient-1': '#9B59B6',
   'gradient-2': '#14B8A6',
   'gradient-3': '#E07070',
   'gradient-4': '#3B82F6',
   'gradient-5': '#C026D3',
   'gradient-6': '#27AE60',
+}
+
+function resolveBackgroundColor(style: string): string {
+  if (GRADIENT_PRESETS[style]) return GRADIENT_PRESETS[style]
+  return style || '#9B59B6'
 }
 
 export default function ShareQuotes() {
@@ -95,9 +100,7 @@ export default function ShareQuotes() {
     canvas.width = 1200
     canvas.height = 630
 
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-
-    const colors = {
+    const gradientColors: Record<string, string[]> = {
       'gradient-1': ['#2563eb', '#9333ea', '#ec4899'],
       'gradient-2': ['#14b8a6', '#059669', '#06b6d4'],
       'gradient-3': ['#f97316', '#dc2626', '#ec4899'],
@@ -106,12 +109,16 @@ export default function ShareQuotes() {
       'gradient-6': ['#16a34a', '#14b8a6', '#2563eb'],
     }
 
-    const bgColors = colors[quote.backgroundStyle as keyof typeof colors] || colors['gradient-1']
-    gradient.addColorStop(0, bgColors[0])
-    gradient.addColorStop(0.5, bgColors[1])
-    gradient.addColorStop(1, bgColors[2])
-
-    ctx.fillStyle = gradient
+    const bgColors = gradientColors[quote.backgroundStyle]
+    if (bgColors) {
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
+      gradient.addColorStop(0, bgColors[0])
+      gradient.addColorStop(0.5, bgColors[1])
+      gradient.addColorStop(1, bgColors[2])
+      ctx.fillStyle = gradient
+    } else {
+      ctx.fillStyle = quote.backgroundStyle || '#9B59B6'
+    }
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'
@@ -274,10 +281,10 @@ export default function ShareQuotes() {
           <div className="lg:col-span-2">
             {selectedQuote && selectedQuote.sacredText && selectedQuote.sacredText.tradition && (
               <div className="space-y-4 sm:space-y-5 md:space-y-6">
-                <div
-                  className={`relative rounded-xl p-8 sm:p-10 md:p-12 min-h-[300px] sm:min-h-[400px] flex flex-col items-center justify-center text-center shadow-premium-lg overflow-hidden`}
-                  style={{ backgroundColor: backgroundColors[selectedQuote.backgroundStyle as keyof typeof backgroundColors] || '#9B59B6' }}
-                >
+                  <div
+                    className={`relative rounded-xl p-8 sm:p-10 md:p-12 min-h-[300px] sm:min-h-[400px] flex flex-col items-center justify-center text-center shadow-premium-lg overflow-hidden`}
+                    style={{ backgroundColor: resolveBackgroundColor(selectedQuote.backgroundStyle) }}
+                  >
                   <div className="absolute inset-0 bg-[#0b0f2a]/10 backdrop-blur-sm"></div>
 
                   <div className="relative z-10">

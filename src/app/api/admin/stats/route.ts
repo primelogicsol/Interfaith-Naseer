@@ -35,6 +35,8 @@ export async function GET() {
       sufiCards,
       approachCards,
       similarityTeachings,
+      pageContent,
+      founderSections,
     ] = await Promise.all([
       prisma.tradition.count(),
       prisma.teaching.count(),
@@ -67,6 +69,8 @@ export async function GET() {
       prisma.sufiCard.count(),
       prisma.approachCard.count(),
       prisma.similarityTeaching.count(),
+      prisma.pageContent.count(),
+      prisma.founderPageSection.count(),
     ])
 
     return NextResponse.json({
@@ -101,6 +105,8 @@ export async function GET() {
       sufiCards,
       approachCards,
       similarityTeachings,
+      pageContent,
+      founderSections,
     })
   } catch (error) {
     console.error('Error fetching admin stats:', error)

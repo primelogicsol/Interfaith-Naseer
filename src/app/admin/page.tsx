@@ -54,6 +54,8 @@ interface DashboardStats {
   approachContent: number
   sufiCards: number
   approachCards: number
+  pageContent: number
+  founderSections: number
 }
 
 interface StatCard {
@@ -377,6 +379,22 @@ export default function AdminDashboard() {
       color: 'from-indigo-500 to-indigo-600',
       href: '/admin/approach-cards',
       description: 'Approach page card entries',
+    },
+    {
+      title: 'Page Content',
+      count: stats?.pageContent || 0,
+      icon: FileText,
+      color: 'from-teal-500 to-teal-600',
+      href: '/admin/page-content',
+      description: 'Page headings and section text',
+    },
+    {
+      title: 'Founder Sections',
+      count: stats?.founderSections || 0,
+      icon: Users,
+      color: 'from-purple-500 to-purple-600',
+      href: '/admin/founder',
+      description: 'Founder page profiles',
     },
   ]
 

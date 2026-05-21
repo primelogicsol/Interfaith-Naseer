@@ -28,6 +28,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-[#f5f3ee] mb-4 sm:mb-6 text-sm uppercase tracking-wider">Our Mission</h4>
             <ul className="space-y-3 text-sm">
+              <li><Link href="/founder" className="hover:text-[#c8a75e] transition-colors flex items-center group">
+                <span className="w-1 h-1 bg-[#c8a75e] rounded-full mr-2 group-hover:w-2 transition-all"></span>
+                Founder
+              </Link></li>
               <li><Link href="/about" className="hover:text-[#c8a75e] transition-colors flex items-center group">
                 <span className="w-1 h-1 bg-[#c8a75e] rounded-full mr-2 group-hover:w-2 transition-all"></span>
                 About Us
@@ -69,10 +73,10 @@ export default function Footer() {
           </div>
           <div className="sm:col-span-2 lg:col-span-1">
             <h4 className="font-bold text-[#f5f3ee] mb-4 sm:mb-6 text-sm uppercase tracking-wider">Connect & Share</h4>
-            <p className="text-[#aab0d6] text-sm mb-4 leading-relaxed">
-              Join our global community working toward interfaith harmony and peace.
-            </p>
             <div className="space-y-3">
+              <Link href="/contact-us" className="block w-full px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold bg-[#c8a75e] hover:bg-[#d4b56d] text-[#0b0f2a] shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center text-sm">
+                Contact Us
+              </Link>
               <Link href="/share-quotes" className="block w-full px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold bg-[#9b59b6] hover:bg-[#8b4aa6] text-[#f5f3ee] shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center text-sm">
                 Share Sacred Wisdom
               </Link>

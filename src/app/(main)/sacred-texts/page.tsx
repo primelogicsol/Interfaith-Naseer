@@ -39,15 +39,31 @@ const themeIcons: Record<string, React.ComponentType<{ className?: string }>> = 
   mercy: Sparkles,
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function SacredTexts() {
   const [texts, setTexts] = useState<SacredText[]>([])
   const [selectedTheme, setSelectedTheme] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 6
 
   useEffect(() => {
     fetchTexts()
+    fetch('/api/page-content?pageKey=sacred-texts')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Universal Wisdom'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Sacred Texts'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || '& Scriptures'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   useEffect(() => {
     setCurrentPage(1)
@@ -77,19 +93,20 @@ export default function SacredTexts() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Universal Wisdom
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Sacred Texts
-            <span className="block text-[#C8A75E] mt-2">& Scriptures</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            Explore the profound wisdom found in the sacred writings of the world&apos;s great
-            spiritual traditions, revealing universal truths that unite humanity.
-          </p>
+          {heroSubtitle && (
+            <p className="text-base sm:text-lg md:text-xl text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

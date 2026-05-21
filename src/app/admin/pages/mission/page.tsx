@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FileText, Shield, LayoutDashboard, ExternalLink, Pencil, X, Check, ArrowLeft } from 'lucide-react'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 interface MissionContent {
   id: string
@@ -90,6 +91,9 @@ export default function MissionPageEditor() {
       </div>
 
       <div className="grid gap-6">
+
+        <ContentSectionEditor pageKey="mission" />
+
         {/* Our Mission Header */}
         <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
           <div className="flex items-start justify-between mb-4">
@@ -237,6 +241,8 @@ export default function MissionPageEditor() {
           </div>
         </div>
       </div>
+
+      
     </div>
   )
 }

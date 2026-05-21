@@ -26,6 +26,12 @@ interface SacredText {
   tradition?: Tradition | null
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function SacredTextsExplorer() {
   const [allTexts, setAllTexts] = useState<SacredText[]>([])
   const [selectedTheme, setSelectedTheme] = useState<string>('all')
@@ -35,6 +41,7 @@ export default function SacredTextsExplorer() {
   const [traditions, setTraditions] = useState<Tradition[]>([])
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
 
   const ITEMS_PER_PAGE = 6
 
@@ -56,12 +63,14 @@ export default function SacredTextsExplorer() {
   async function loadData() {
     setLoading(true)
     try {
-      const [traditionsRes, textsRes] = await Promise.all([
+      const [traditionsRes, textsRes, pageContentData] = await Promise.all([
         getTraditions(),
         getSacredTexts(),
+        fetch('/api/page-content?pageKey=sacred-texts-explorer').then(res => res.ok ? res.json() : []),
       ])
 
       if (traditionsRes.data) setTraditions(traditionsRes.data)
+      if (Array.isArray(pageContentData)) setPageContent(pageContentData)
       if (textsRes.data) setAllTexts(textsRes.data)
     } catch (error) {
       console.error('Error loading sacred texts:', error)
@@ -73,6 +82,10 @@ export default function SacredTextsExplorer() {
   useEffect(() => {
     setCurrentPage(1)
   }, [selectedTheme, selectedTradition, searchQuery, viewMode])
+
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Sacred Texts'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Explorer'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   const filteredTexts = allTexts.filter(text => {
     if (selectedTheme !== 'all' && text.theme !== selectedTheme) return false
@@ -115,11 +128,13 @@ export default function SacredTextsExplorer() {
             <BookOpen className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-gradient-primary" />
           </div>
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 px-4">
-            <span className="text-gradient-primary">Sacred Texts</span> Explorer
+            <span className="text-gradient-primary">{heroHeading1}</span> {heroHeading2}
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-premium-light max-w-3xl mx-auto leading-relaxed px-4">
-            Discover the profound similarities across world religions. Compare sacred teachings side-by-side and witness how the same universal truths echo through different traditions.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium-light max-w-3xl mx-auto leading-relaxed px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
 
         <div className="glass-effect rounded-xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-10 md:mb-12 relative z-[1]">

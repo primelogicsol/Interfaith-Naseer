@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MessageSquare, Lightbulb, ExternalLink, Pencil, X, Check, ArrowLeft } from 'lucide-react'
 import BulkUpload from '@/components/admin/BulkUpload'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 interface Misconception {
   id: string
@@ -82,6 +83,9 @@ export default function TruthPageEditor() {
       </div>
 
       <div className="grid gap-6">
+
+        <ContentSectionEditor pageKey="truth" />
+        
         {/* Misconceptions */}
         <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
           <div className="flex items-start justify-between mb-4">
@@ -190,6 +194,8 @@ export default function TruthPageEditor() {
           )}
         </div>
       </div>
+
+      
     </div>
   )
 }

@@ -58,7 +58,7 @@ async function main() {
   // ── Helper: seed only when table is empty ──────────────
   async function seedTable<T>(name: string, fn: () => Promise<T[]>): Promise<number> {
     // Exclude models that use sectionKey as unique identifier
-    const skipCountModels = ['missionContent', 'aboutContent', 'teachingSection', 'truthSection', 'traditionSection', 'sufiContent', 'approachContent']
+    const skipCountModels = ['missionContent', 'aboutContent', 'teachingSection', 'truthSection', 'traditionSection', 'sufiContent', 'approachContent', 'pageContent']
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const model = (prisma as any)[name]
     if (!skipCountModels.includes(name)) {
@@ -880,6 +880,195 @@ Grassroots Empowerment — We train local leaders to facilitate interfaith work 
   } else {
     console.log(`⏭️  similarityTeaching: ${existingTeachingCount} existing records — skipping`)
   }
+
+  // ── Page Content ────────────────────────────────────────
+  console.log('\n--- Page Content ---')
+
+  const pageSections = [
+    // Home
+    { pageKey: 'home', sectionKey: 'hero_badge', title: 'Bearer of Sufi Wisdom', content: null, orderIndex: 0 },
+    { pageKey: 'home', sectionKey: 'hero_heading_1', title: 'Uniting Hearts Through', content: null, orderIndex: 1 },
+    { pageKey: 'home', sectionKey: 'hero_heading_2', title: 'Divine Love & Understanding', content: null, orderIndex: 2 },
+    { pageKey: 'home', sectionKey: 'hero_subtitle', title: null, content: 'A sacred space to eliminate hatred, dispel misconceptions, and discover the universal truths that bind all faiths together in peace, compassion, and divine love.', orderIndex: 3 },
+    { pageKey: 'home', sectionKey: 'mission_heading', title: 'Our Sacred Mission', content: null, orderIndex: 4 },
+    { pageKey: 'home', sectionKey: 'mission_subtitle', title: null, content: 'Guided by Sufi wisdom, we illuminate the path to interfaith harmony', orderIndex: 5 },
+    { pageKey: 'home', sectionKey: 'join_heading', title: 'Join the Movement for Peace', content: null, orderIndex: 6 },
+    { pageKey: 'home', sectionKey: 'join_subtitle', title: null, content: 'Together, we can create a world where love triumphs over hate, understanding overcomes fear, and unity transcends division.', orderIndex: 7 },
+    // Mission
+    { pageKey: 'mission', sectionKey: 'hero_badge', title: 'Our Sacred Purpose', content: null, orderIndex: 0 },
+    { pageKey: 'mission', sectionKey: 'hero_heading_1', title: 'Our Mission for', content: null, orderIndex: 1 },
+    { pageKey: 'mission', sectionKey: 'hero_heading_2', title: 'Interfaith Harmony', content: null, orderIndex: 2 },
+    { pageKey: 'mission', sectionKey: 'pillars_heading', title: 'Core Pillars of Our Work', content: null, orderIndex: 3 },
+    // Approach
+    { pageKey: 'approach', sectionKey: 'hero_badge', title: 'Our Methodology', content: null, orderIndex: 0 },
+    { pageKey: 'approach', sectionKey: 'hero_heading_1', title: 'Our', content: null, orderIndex: 1 },
+    { pageKey: 'approach', sectionKey: 'hero_heading_2', title: 'Approach to Unity', content: null, orderIndex: 2 },
+    { pageKey: 'approach', sectionKey: 'hero_subtitle', title: null, content: 'A proven methodology combining ancient wisdom with modern engagement strategies to foster genuine interfaith harmony.', orderIndex: 3 },
+    { pageKey: 'approach', sectionKey: 'subtitle', title: null, content: 'A step-by-step process for building genuine interfaith understanding', orderIndex: 4 },
+    { pageKey: 'approach', sectionKey: 'ready_heading', title: 'Ready to Experience Our Approach?', content: null, orderIndex: 5 },
+    { pageKey: 'approach', sectionKey: 'ready_subtitle', title: null, content: 'Join us in building a world where religious diversity enriches rather than divides.', orderIndex: 6 },
+    // Sufi Teachings
+    { pageKey: 'sufi-teachings', sectionKey: 'hero_badge', title: 'The Path of Love', content: null, orderIndex: 0 },
+    { pageKey: 'sufi-teachings', sectionKey: 'hero_heading_1', title: 'Sufi', content: null, orderIndex: 1 },
+    { pageKey: 'sufi-teachings', sectionKey: 'hero_heading_2', title: 'Teachings & Wisdom', content: null, orderIndex: 2 },
+    { pageKey: 'sufi-teachings', sectionKey: 'hero_subtitle', title: null, content: 'Explore the timeless wisdom of Sufism, the mystical heart of Islam, and discover the path of divine love that transcends all boundaries.', orderIndex: 3 },
+    // Teachings
+    { pageKey: 'teachings', sectionKey: 'hero_badge', title: 'Sacred Wisdom', content: null, orderIndex: 0 },
+    { pageKey: 'teachings', sectionKey: 'hero_heading_1', title: 'Timeless Teachings of', content: null, orderIndex: 1 },
+    { pageKey: 'teachings', sectionKey: 'hero_heading_2', title: 'Love & Unity', content: null, orderIndex: 2 },
+    { pageKey: 'teachings', sectionKey: 'hero_subtitle', title: null, content: 'Explore sacred wisdom from Sufism and world traditions that illuminate the path to peace and understanding.', orderIndex: 3 },
+    { pageKey: 'teachings', sectionKey: 'similarities_heading', title: 'Similarities Among Faiths', content: null, orderIndex: 4 },
+    { pageKey: 'teachings', sectionKey: 'similarities_subtitle', title: null, content: 'Discover the profound common ground shared across world religions, revealing the universal truths that unite humanity.', orderIndex: 5 },
+    // Truth
+    { pageKey: 'truth', sectionKey: 'hero_badge', title: 'Illuminating Truth', content: null, orderIndex: 0 },
+    { pageKey: 'truth', sectionKey: 'hero_heading_1', title: 'Revealing Truth,', content: null, orderIndex: 1 },
+    { pageKey: 'truth', sectionKey: 'hero_heading_2', title: 'Dispelling Darkness', content: null, orderIndex: 2 },
+    { pageKey: 'truth', sectionKey: 'hero_subtitle', title: null, content: 'Understanding replaces ignorance when we illuminate common misconceptions with the light of authentic knowledge.', orderIndex: 3 },
+    { pageKey: 'truth', sectionKey: 'misconceptions_heading', title: 'Common Misconceptions & Their Truths', content: null, orderIndex: 4 },
+    { pageKey: 'truth', sectionKey: 'misconceptions_subtitle', title: null, content: 'Knowledge is the first step toward understanding. Explore the truths behind common misconceptions.', orderIndex: 5 },
+    // Traditions
+    { pageKey: 'traditions', sectionKey: 'hero_badge', title: 'Celebrating Diversity', content: null, orderIndex: 0 },
+    { pageKey: 'traditions', sectionKey: 'hero_heading_1', title: 'Honoring All Paths', content: null, orderIndex: 1 },
+    { pageKey: 'traditions', sectionKey: 'hero_heading_2', title: 'to the Divine', content: null, orderIndex: 2 },
+    { pageKey: 'traditions', sectionKey: 'hero_subtitle', title: null, content: 'Each tradition is a river flowing toward the ocean of divine truth, carrying the unique beauty of its cultural and spiritual heritage.', orderIndex: 3 },
+    { pageKey: 'traditions', sectionKey: 'traditions_heading', title: 'Faith Traditions We Honor', content: null, orderIndex: 4 },
+    { pageKey: 'traditions', sectionKey: 'traditions_subtitle', title: null, content: 'From ancient wisdom to contemporary expressions of faith, each tradition offers a unique path to the Divine.', orderIndex: 5 },
+    { pageKey: 'traditions', sectionKey: 'values_heading', title: 'Shared Values Across Traditions', content: null, orderIndex: 6 },
+    // Sacred Texts
+    { pageKey: 'sacred-texts', sectionKey: 'hero_badge', title: 'Universal Wisdom', content: null, orderIndex: 0 },
+    { pageKey: 'sacred-texts', sectionKey: 'hero_heading_1', title: 'Sacred Texts', content: null, orderIndex: 1 },
+    { pageKey: 'sacred-texts', sectionKey: 'hero_heading_2', title: '& Scriptures', content: null, orderIndex: 2 },
+    { pageKey: 'sacred-texts', sectionKey: 'hero_subtitle', title: null, content: 'Explore the profound wisdom found in the sacred writings of the world\'s great religious traditions.', orderIndex: 3 },
+    { pageKey: 'sacred-texts', sectionKey: 'languages_heading', title: 'One Truth, Many Languages', content: null, orderIndex: 4 },
+    { pageKey: 'sacred-texts', sectionKey: 'languages_subtitle', title: null, content: 'While each sacred text speaks in its own cultural and historical context, the universal truths they convey echo across time and tradition.', orderIndex: 5 },
+    { pageKey: 'sacred-texts', sectionKey: 'traditions_heading', title: 'Sacred Texts from World Traditions', content: null, orderIndex: 6 },
+    { pageKey: 'sacred-texts', sectionKey: 'themes_heading', title: 'Shared Themes Across Traditions', content: null, orderIndex: 7 },
+    { pageKey: 'sacred-texts', sectionKey: 'themes_subtitle', title: null, content: 'Despite differences in language, culture, and historical context, profound similarities emerge when we compare sacred texts side by side.', orderIndex: 8 },
+    { pageKey: 'sacred-texts', sectionKey: 'sufi_heading', title: 'Sufi Perspective on Sacred Texts', content: null, orderIndex: 9 },
+    { pageKey: 'sacred-texts', sectionKey: 'study_heading', title: 'Study Resources', content: null, orderIndex: 10 },
+    // Sacred Texts Explorer
+    { pageKey: 'sacred-texts-explorer', sectionKey: 'hero_heading_1', title: 'Sacred Texts', content: null, orderIndex: 0 },
+    { pageKey: 'sacred-texts-explorer', sectionKey: 'hero_heading_2', title: 'Explorer', content: null, orderIndex: 1 },
+    { pageKey: 'sacred-texts-explorer', sectionKey: 'hero_subtitle', title: null, content: 'Discover the profound similarities across world religions through their sacred writings.', orderIndex: 2 },
+    // About
+    { pageKey: 'about', sectionKey: 'hero_badge', title: 'Who We Are', content: null, orderIndex: 0 },
+    { pageKey: 'about', sectionKey: 'hero_heading_1', title: 'About', content: null, orderIndex: 1 },
+    { pageKey: 'about', sectionKey: 'hero_heading_2', title: 'Interfaith Peace Bridge', content: null, orderIndex: 2 },
+    { pageKey: 'about', sectionKey: 'hero_subtitle', title: null, content: 'A global movement dedicated to building bridges of understanding between all faiths and spiritual traditions.', orderIndex: 3 },
+    { pageKey: 'about', sectionKey: 'leadership_heading', title: 'Our Leadership', content: null, orderIndex: 4 },
+    { pageKey: 'about', sectionKey: 'leadership_subtitle', title: null, content: 'Guided by scholars, spiritual teachers, and interfaith activists dedicated to fostering global harmony.', orderIndex: 5 },
+    { pageKey: 'about', sectionKey: 'impact_heading', title: 'Our Impact', content: null, orderIndex: 6 },
+    { pageKey: 'about', sectionKey: 'join_heading', title: 'Join Us in Building Bridges', content: null, orderIndex: 7 },
+    { pageKey: 'about', sectionKey: 'join_subtitle', title: null, content: 'Be part of a global movement transforming interfaith relations through the power of divine love.', orderIndex: 8 },
+    { pageKey: 'about', sectionKey: 'contact_heading', title: 'Contact Us', content: null, orderIndex: 9 },
+    { pageKey: 'about', sectionKey: 'contact_subtitle', title: null, content: 'Have a question, suggestion, or want to collaborate? We\'d love to hear from you.', orderIndex: 10 },
+    // Peace
+    { pageKey: 'peace', sectionKey: 'hero_badge', title: 'Building Peace Together', content: null, orderIndex: 0 },
+    { pageKey: 'peace', sectionKey: 'hero_heading_1', title: 'Our', content: null, orderIndex: 1 },
+    { pageKey: 'peace', sectionKey: 'hero_heading_2', title: 'Peace Work', content: null, orderIndex: 2 },
+    { pageKey: 'peace', sectionKey: 'hero_subtitle', title: null, content: 'From local dialogue circles to global collaborations, our peace initiatives are rooted in the Sufi tradition of universal love.', orderIndex: 3 },
+    { pageKey: 'peace', sectionKey: 'initiatives_heading', title: 'Active Initiatives', content: null, orderIndex: 4 },
+    { pageKey: 'peace', sectionKey: 'join_heading', title: 'Join Our Peace Movement', content: null, orderIndex: 5 },
+    { pageKey: 'peace', sectionKey: 'join_subtitle', title: null, content: 'Every act of understanding, every bridge built, brings us closer to a world of lasting peace.', orderIndex: 6 },
+    // Peace Initiatives
+    { pageKey: 'peace-initiatives', sectionKey: 'hero_badge', title: 'Building Peace Together', content: null, orderIndex: 0 },
+    { pageKey: 'peace-initiatives', sectionKey: 'hero_heading_1', title: 'Peace', content: null, orderIndex: 1 },
+    { pageKey: 'peace-initiatives', sectionKey: 'hero_heading_2', title: 'Initiatives', content: null, orderIndex: 2 },
+    { pageKey: 'peace-initiatives', sectionKey: 'hero_subtitle', title: null, content: 'Active programs and collaborative projects building bridges of understanding across communities worldwide.', orderIndex: 3 },
+    { pageKey: 'peace-initiatives', sectionKey: 'initiatives_heading', title: 'Our Current Initiatives', content: null, orderIndex: 4 },
+    { pageKey: 'peace-initiatives', sectionKey: 'goals_heading', title: '2026 Impact Goals', content: null, orderIndex: 5 },
+    { pageKey: 'peace-initiatives', sectionKey: 'programs_heading', title: 'Featured Programs', content: null, orderIndex: 6 },
+    { pageKey: 'peace-initiatives', sectionKey: 'regional_heading', title: 'Regional Initiatives', content: null, orderIndex: 7 },
+    { pageKey: 'peace-initiatives', sectionKey: 'involved_heading', title: 'Get Involved', content: null, orderIndex: 8 },
+    { pageKey: 'peace-initiatives', sectionKey: 'involved_subtitle', title: null, content: 'Every initiative needs dedicated people like you. Find your place in our movement for peace.', orderIndex: 9 },
+    { pageKey: 'peace-initiatives', sectionKey: 'events_heading', title: 'Upcoming Events', content: null, orderIndex: 10 },
+    // Join
+    { pageKey: 'join', sectionKey: 'hero_badge', title: 'Join Us Today', content: null, orderIndex: 0 },
+    { pageKey: 'join', sectionKey: 'hero_heading_1', title: 'Be Part of', content: null, orderIndex: 1 },
+    { pageKey: 'join', sectionKey: 'hero_heading_2', title: 'Something Greater', content: null, orderIndex: 2 },
+    { pageKey: 'join', sectionKey: 'hero_subtitle', title: null, content: 'Join thousands of people from every faith tradition and background who are building bridges of understanding worldwide.', orderIndex: 3 },
+    { pageKey: 'join', sectionKey: 'ready_heading', title: 'Ready to Join?', content: null, orderIndex: 4 },
+    { pageKey: 'join', sectionKey: 'ready_subtitle', title: null, content: 'Fill out the form below to become part of our global interfaith family.', orderIndex: 5 },
+    { pageKey: 'join', sectionKey: 'footer_heading', title: 'Together, We Create a World of Peace', content: null, orderIndex: 6 },
+    { pageKey: 'join', sectionKey: 'footer_subtitle', title: null, content: 'Every person who joins our movement adds a unique thread to the tapestry of global peace.', orderIndex: 7 },
+    // Subscribe
+    { pageKey: 'subscribe', sectionKey: 'hero_badge', title: 'Stay Connected', content: null, orderIndex: 0 },
+    { pageKey: 'subscribe', sectionKey: 'hero_heading_1', title: 'Subscribe to Our', content: null, orderIndex: 1 },
+    { pageKey: 'subscribe', sectionKey: 'hero_heading_2', title: 'Newsletter', content: null, orderIndex: 2 },
+    { pageKey: 'subscribe', sectionKey: 'hero_subtitle', title: null, content: 'Receive inspiring content, sacred wisdom, and updates from our global interfaith community.', orderIndex: 3 },
+    { pageKey: 'subscribe', sectionKey: 'subscribers_heading', title: 'Join 25,000+ Subscribers', content: null, orderIndex: 4 },
+    { pageKey: 'subscribe', sectionKey: 'newsletter_heading', title: 'What\'s Inside Each Newsletter?', content: null, orderIndex: 5 },
+    { pageKey: 'subscribe', sectionKey: 'newsletter_subtitle', title: null, content: 'Free forever. Delivered with love.', orderIndex: 6 },
+    { pageKey: 'subscribe', sectionKey: 'footer_heading', title: 'Start Your Journey of Discovery Today', content: null, orderIndex: 7 },
+    { pageKey: 'subscribe', sectionKey: 'footer_subtitle', title: null, content: 'Join thousands of seekers receiving wisdom, inspiration, and community in their inbox.', orderIndex: 8 },
+    // Founder
+    { pageKey: 'founder', sectionKey: 'hero_badge', title: 'Our Founder', content: null, orderIndex: 0 },
+    { pageKey: 'founder', sectionKey: 'hero_heading_1', title: 'Our', content: null, orderIndex: 1 },
+    { pageKey: 'founder', sectionKey: 'hero_heading_2', title: 'Founder', content: null, orderIndex: 2 },
+    { pageKey: 'founder', sectionKey: 'hero_subtitle', title: null, content: 'The guiding lights behind Interfaith Peace Bridge, whose vision and dedication continue to inspire our global movement.', orderIndex: 3 },
+    // Share Quotes
+    { pageKey: 'share-quotes', sectionKey: 'hero_heading_1', title: 'Share', content: null, orderIndex: 0 },
+    { pageKey: 'share-quotes', sectionKey: 'hero_heading_2', title: 'Sacred Wisdom', content: null, orderIndex: 1 },
+    { pageKey: 'share-quotes', sectionKey: 'hero_subtitle', title: null, content: 'Beautiful, shareable quote cards from world religions to inspire and uplift.', orderIndex: 2 },
+    // Assessment
+    { pageKey: 'assessment', sectionKey: 'hero_badge', title: 'Faith Assessment', content: null, orderIndex: 0 },
+    { pageKey: 'assessment', sectionKey: 'hero_heading_1', title: 'Heart & Faith', content: null, orderIndex: 1 },
+    { pageKey: 'assessment', sectionKey: 'hero_heading_2', title: 'Assessment', content: null, orderIndex: 2 },
+    { pageKey: 'assessment', sectionKey: 'hero_subtitle', title: null, content: 'A thoughtful journey of self-reflection to discover the universal values that unite us all.', orderIndex: 3 },
+  ]
+
+  for (const section of pageSections) {
+    await prisma.pageContent.upsert({
+      where: { pageKey_sectionKey: { pageKey: section.pageKey, sectionKey: section.sectionKey } },
+      update: {},
+      create: section,
+    })
+  }
+  console.log(`✅ pageContent: ${pageSections.length} sections`)
+
+  // ── Founder Page Sections ──────────────────────────────
+  console.log('\n--- Founder Page Sections ---')
+
+  const founderSections = [
+    {
+      slug: 'the-originator',
+      pageTitle: 'Bani — The Originator',
+      pageSubtitle: 'Representative stewardship and institutional development are guided by Dr. Zarf-e-Noori under the framework of Mithaq.',
+      cardTitle: 'Spiritual guide, physician, and Sufi master whose life bridged medicine, mysticism, and structured institutional awakening.',
+      cardSubtitle: 'Dr. Ghulam Mohammad Kumar',
+      badgeLabel: 'FOUNDER — BANI',
+      imagePath: '/uploads/founders/dr-kumar.png',
+      order: 1,
+      cardDescription: [
+        "Dr. Ghulam Mohammad Kumar's journey began within a Kashmiri heritage grounded in scholarly and spiritual traditions. Born in 1957 into a family rooted in learning and healing, he demonstrated exceptional contemplative nature and profound inner sensitivity from his earliest years.",
+        'He trained in modern medicine at Government Medical College Srinagar and practiced as a Medical Officer. Yet instinctively drawn deeper into inner inquiry, he transitioned from clinical practice toward a life devoted to spiritual depth and the pursuit of universal truth.',
+        "His formative years in Kashmir's rich spiritual landscape shaped a disposition that would ultimately bridge conventional medical training with the ancient wisdom traditions of Kashmiri Sufism. Fourteen years of contemplative retreat in the forests of Ganderbal shaped a vision that transcends individual legacy."
+      ]
+    },
+    {
+      slug: 'representative-stewardship',
+      pageTitle: 'Representative Stewardship',
+      pageSubtitle: 'Guiding institutional development under the constitutional framework of Mithaq',
+      cardTitle: 'Overseeing structural development, institutional governance integration, and digital expansion aligned with the founding charter.',
+      cardSubtitle: 'Dr. Zarf-e-Noori',
+      badgeLabel: 'REPRESENTATIVE FOUNDER',
+      imagePath: '/uploads/founders/dr-zafr.jpeg',
+      order: 2,
+      cardDescription: [
+        'The representative role focuses on architectural design: translating constitutional principles into operational systems, integrating editorial processes with production workflows, and establishing technological infrastructure that serves institutional permanence.',
+        'Structural development includes the construction of multi-layered governance systems, role-based participation frameworks, registry documentation protocols, and economic transparency mechanisms that reinforce charter authority.'
+      ]
+    }
+  ]
+
+  for (const section of founderSections) {
+    await prisma.founderPageSection.upsert({
+      where: { slug: section.slug },
+      update: {},
+      create: section,
+    })
+  }
+  console.log(`✅ founderPageSection: ${founderSections.length} sections`)
 
   console.log('\n🎉 Seeding completed!')
 }

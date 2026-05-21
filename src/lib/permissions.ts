@@ -34,6 +34,9 @@ export type Resource =
   | 'approach_cards'
   | 'current_initiatives'
   | 'similarity_teachings'
+  | 'page_content'
+  | 'founder_sections'
+  | 'contact_messages'
 
 /**
  * Check if a user has permission to perform an action on a resource
@@ -89,6 +92,7 @@ export async function checkPermission(
         'approach_cards',
         'current_initiatives',
         'similarity_teachings',
+        'contact_messages',
       ]
       return contentResources.includes(resource)
     }
@@ -258,6 +262,9 @@ export function getDefaultPermissions(role: Role): {
         { resource: 'approach_cards', actions: ['read', 'create', 'update'] },
         { resource: 'current_initiatives', actions: ['read', 'create', 'update'] },
         { resource: 'similarity_teachings', actions: ['read', 'create', 'update'] },
+        { resource: 'page_content', actions: ['read', 'create', 'update'] },
+        { resource: 'founder_sections', actions: ['read', 'create', 'update'] },
+        { resource: 'contact_messages', actions: ['read', 'create', 'update'] },
       ]
 
     case 'user':

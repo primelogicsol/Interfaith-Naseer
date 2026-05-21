@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, Mail, Shield, Camera, Save, Loader2, Clock, CheckCircle, XCircle, Lock, Key } from 'lucide-react'
+import { User, Mail, Shield, Camera, Save, Loader2, Clock, CheckCircle, XCircle, Lock, Key, ChevronDown, AlertTriangle } from 'lucide-react'
 import Image from 'next/image'
 
 interface UserData {
@@ -43,6 +43,7 @@ export default function ProfilePage() {
   const [submittingRequest, setSubmittingRequest] = useState(false)
 
   // Password change states
+  const [showPasswordForm, setShowPasswordForm] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -255,7 +256,7 @@ export default function ProfilePage() {
     .slice(0, 2)
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto px-4 py-8 pt-28 md:pt-36 max-w-6xl">
       <div className="mb-8">
         <h1 className="text-2xl md:text-4xl font-bold text-[#f5f3ee] mb-2">My Profile</h1>
         <p className="text-premium-light">Manage your account information</p>
@@ -431,6 +432,10 @@ export default function ProfilePage() {
               )}
             </div>
           )}
+
+          {/* Contact Messages */}
+          <ContactMessagesSection />
+
         </div>
 
         {/* Edit Form */}
@@ -546,104 +551,157 @@ export default function ProfilePage() {
 
           {/* Change Password Section */}
           <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20 mt-6">
-            <h3 className="text-lg font-bold text-[#f5f3ee] mb-6 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-[#c8a75e]" />
-              Change Password
-            </h3>
+            <button
+              type="button"
+              onClick={() => setShowPasswordForm(!showPasswordForm)}
+              className="w-full flex items-center justify-between gap-2"
+            >
+              <h3 className="text-lg font-bold text-[#f5f3ee] flex items-center gap-2">
+                <Lock className="w-5 h-5 text-[#c8a75e]" />
+                Change Password
+              </h3>
+              <div className={`p-1.5 rounded-lg bg-[#c8a75e]/10 text-[#c8a75e] transition-transform duration-300 ${showPasswordForm ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-5 h-5" />
+              </div>
+            </button>
 
             {passwordMessage && (
               <div
-                className={`mb-6 p-4 rounded-xl ${
+                className={`mt-4 p-4 rounded-xl text-sm ${
                   passwordMessage.type === 'success'
                     ? 'bg-green-500/20 border border-green-500/30 text-green-400'
                     : 'bg-red-500/20 border border-red-500/30 text-red-400'
                 }`}
               >
-                {passwordMessage.text}
+                <div className="flex items-center gap-2">
+                  {passwordMessage.type === 'success' ? <CheckCircle className="w-4 h-4 flex-shrink-0" /> : <AlertTriangle className="w-4 h-4 flex-shrink-0" />}
+                  {passwordMessage.text}
+                </div>
               </div>
             )}
 
-            <form onSubmit={handlePasswordChange} className="space-y-6">
-              {/* Current Password */}
-              <div>
-                <label className="block text-sm font-medium text-premium mb-2">
-                  <Key className="w-4 h-4 inline mr-2" />
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
-                  required
-                  minLength={8}
-                />
-              </div>
+            <div className={`overflow-hidden transition-all duration-300 ${showPasswordForm ? 'max-h-[600px] mt-6' : 'max-h-0'}`}>
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-premium-light mb-1.5">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-sm text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
+                    required
+                    minLength={8}
+                    placeholder="Enter current password"
+                  />
+                </div>
 
-              {/* New Password */}
-              <div>
-                <label className="block text-sm font-medium text-premium mb-2">
-                  <Lock className="w-4 h-4 inline mr-2" />
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
-                  required
-                  minLength={8}
-                />
-              </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-premium-light mb-1.5">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="w-full px-4 py-2.5 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-sm text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
+                      required
+                      minLength={8}
+                      placeholder="New password"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-premium-light mb-1.5">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full px-4 py-2.5 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-sm text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
+                      required
+                      minLength={8}
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+                </div>
 
-              {/* Confirm New Password */}
-              <div>
-                <label className="block text-sm font-medium text-premium mb-2">
-                  <Lock className="w-4 h-4 inline mr-2" />
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#0b0f2a]/50 border border-[#c8a75e]/20 rounded-xl text-[#f5f3ee] focus:outline-none focus:border-[#c8a75e] transition-colors"
-                  required
-                  minLength={8}
-                />
-              </div>
+                <div className="bg-[#0b0f2a]/30 border border-[#c8a75e]/10 rounded-xl p-3">
+                  <p className="text-xs font-medium text-premium mb-1">Requirements:</p>
+                  <ul className="text-[11px] text-premium-light space-y-0.5">
+                    <li>• At least 8 characters</li>
+                    <li>• Uppercase & lowercase letters</li>
+                    <li>• At least one number</li>
+                    <li>• At least one special character</li>
+                  </ul>
+                </div>
 
-              {/* Password Requirements */}
-              <div className="bg-[#0b0f2a]/30 border border-[#c8a75e]/10 rounded-xl p-4">
-                <p className="text-xs font-medium text-premium mb-2">Password Requirements:</p>
-                <ul className="text-xs text-premium-light space-y-1">
-                  <li>• At least 8 characters long</li>
-                  <li>• Contains uppercase and lowercase letters</li>
-                  <li>• Contains at least one number</li>
-                  <li>• Contains at least one special character</li>
-                </ul>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={changingPassword}
-                className="w-full px-6 py-3 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] font-semibold rounded-xl hover:shadow-premium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {changingPassword ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Changing Password...
-                  </>
-                ) : (
-                  <>
-                    <Key className="w-5 h-5" />
-                    Change Password
-                  </>
-                )}
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  disabled={changingPassword}
+                  className="w-full px-6 py-2.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] font-semibold rounded-xl hover:shadow-premium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+                >
+                  {changingPassword ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Updating...</>
+                  ) : (
+                    <><Key className="w-4 h-4" /> Update Password</>
+                  )}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function ContactMessagesSection() {
+  const [messages, setMessages] = useState<{ id: string; subject: string; message: string; adminReply: string | null; repliedAt: string | null; createdAt: string }[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch('/api/contact/my-messages')
+        if (res.ok) setMessages(await res.json())
+      } catch {} finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
+  if (loading) return null
+
+  const withReplies = messages.filter(m => m.adminReply)
+
+  if (withReplies.length === 0) return null
+
+  return (
+    <div className="glass-effect rounded-2xl p-6 border border-[#c8a75e]/20 mt-6">
+      <h3 className="text-base font-bold text-[#f5f3ee] mb-4 flex items-center gap-2">
+        <Mail className="w-5 h-5 text-[#c8a75e]" />
+        Admin Responses
+      </h3>
+      <div className="space-y-3">
+        {withReplies.map((msg) => (
+          <div key={msg.id} className="p-3 rounded-xl bg-green-500/5 border border-green-500/10">
+            <p className="text-xs font-medium text-[#f5f3ee] mb-1">{msg.subject}</p>
+            <p className="text-xs text-premium-light mb-2 line-clamp-2">{msg.message}</p>
+            <div className="p-2 bg-[#0b0f2a]/30 rounded-lg border border-green-500/10">
+              <p className="text-[10px] font-medium text-green-400 mb-0.5">Reply:</p>
+              <p className="text-xs text-[#f5f3ee]">{msg.adminReply}</p>
+              {msg.repliedAt && (
+                <p className="text-[10px] text-premium-light mt-1">
+                  {new Date(msg.repliedAt).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

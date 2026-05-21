@@ -21,18 +21,34 @@ interface WisdomToActionItem {
   content: string
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function Peace() {
   const [peaceInitiatives, setPeaceInitiatives] = useState<PeaceInitiative[]>([])
   const [loaded, setLoaded] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [wisdomData, setWisdomData] = useState<WisdomToActionItem | null>(null)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 4
 
   useEffect(() => {
     fetchInitiatives()
     fetchWisdomToAction()
+    fetch('/api/page-content?pageKey=peace')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Building Peace Together'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Our'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Peace Work'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   async function fetchInitiatives() {
     setFetchError(null)
@@ -75,15 +91,16 @@ export default function Peace() {
         <div className="container mx-auto max-w-4xl text-center">
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-400" />
-            <span className="text-xs sm:text-sm font-semibold text-[#E07070]">Building Peace Together</span>
+            <span className="text-xs sm:text-sm font-semibold text-[#E07070]">{heroBadge}</span>
           </div>
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight">
-            Our <span className="text-[#C8A75E]">Peace</span> Work
+            {heroHeading1} <span className="text-[#C8A75E]">{heroHeading2}</span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto">
-            From local dialogue circles to global collaborations, discover the initiatives that are
-            building bridges of understanding across communities and traditions.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

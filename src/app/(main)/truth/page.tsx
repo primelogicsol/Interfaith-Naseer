@@ -18,6 +18,12 @@ interface Tradition {
   name: string
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function Truth() {
   const [misconceptions, setMisconceptions] = useState<Misconception[]>([])
   const [traditions, setTraditions] = useState<Tradition[]>([])
@@ -27,13 +33,23 @@ export default function Truth() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 4
 
   useEffect(() => {
     fetchTraditions()
     fetchMisconceptions()
     fetchDispellingSection()
+    fetch('/api/page-content?pageKey=truth')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Illuminating Truth'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Revealing Truth,'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Dispelling Darkness'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   async function fetchDispellingSection() {
     const result = await getTruthSection('dispelling_misconceptions')
@@ -103,19 +119,20 @@ export default function Truth() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <span className="text-xs sm:text-sm font-semibold text-[#D4A07B]">
-              Illuminating Truth
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Revealing Truth,
-            <span className="block text-[#C8A75E] mt-2">Dispelling Darkness</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            Understanding replaces ignorance when we illuminate common misconceptions
-            with compassionate truth and authentic knowledge.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

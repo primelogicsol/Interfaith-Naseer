@@ -135,6 +135,12 @@ const CONTENT_FIELD_MAP: Record<string, ContentField[]> = {
     { label: 'Title', value: 'title' },
     { label: 'Content', value: 'content' },
   ],
+  page_content: [
+    { label: 'Page Key', value: 'pageKey' },
+    { label: 'Section Key', value: 'sectionKey' },
+    { label: 'Title', value: 'title' },
+    { label: 'Content', value: 'content' },
+  ],
   wisdom_to_action: [
     { label: 'Title', value: 'title' },
     { label: 'Content', value: 'content' },
@@ -227,6 +233,17 @@ const CONTENT_FIELD_MAP: Record<string, ContentField[]> = {
     { label: 'Color', value: 'color' },
     { label: 'Order', value: 'orderIndex' },
   ],
+  founder_sections: [
+    { label: 'Slug', value: 'slug' },
+    { label: 'Page Title', value: 'pageTitle' },
+    { label: 'Page Subtitle', value: 'pageSubtitle' },
+    { label: 'Card Title', value: 'cardTitle' },
+    { label: 'Card Subtitle', value: 'cardSubtitle' },
+    { label: 'Description', value: 'cardDescription' },
+    { label: 'Image', value: 'imagePath' },
+    { label: 'Badge', value: 'badgeLabel' },
+    { label: 'Order', value: 'order' },
+  ],
 }
 
 const ALLOWED_EDIT_FIELDS: Record<string, string[]> = {
@@ -239,6 +256,7 @@ const ALLOWED_EDIT_FIELDS: Record<string, string[]> = {
   shareable_quotes: ['quoteText', 'backgroundStyle', 'sacredTextId'],
   core_pillars: ['title', 'description', 'icon', 'color'],
   mission_content: ['sectionKey', 'title', 'content'],
+  page_content: ['pageKey', 'sectionKey', 'title', 'content'],
   wisdom_to_action: ['title', 'content'],
   impact_goals: ['number', 'label'],
   featured_programs: ['title', 'description', 'details', 'testimonialText', 'testimonialAuthor'],
@@ -255,6 +273,7 @@ const ALLOWED_EDIT_FIELDS: Record<string, string[]> = {
   approach_content: ['sectionKey', 'title', 'content', 'orderIndex'],
   sufi_cards: ['sectionType', 'title', 'subtitle', 'description', 'quote', 'icon', 'color', 'orderIndex'],
   approach_cards: ['sectionType', 'title', 'description', 'features', 'icon', 'color', 'orderIndex'],
+  founder_sections: ['slug', 'pageTitle', 'pageSubtitle', 'cardTitle', 'cardSubtitle', 'cardDescription', 'imagePath', 'badgeLabel', 'order'],
 }
 
 const FIELD_LABELS: Record<string, string> = {
@@ -737,6 +756,12 @@ export default function ContentReviewPage() {
         { key: 'title', label: 'Title', multiline: false },
         { key: 'content', label: 'Content', multiline: true },
       ],
+      page_content: [
+        { key: 'pageKey', label: 'Page Key', multiline: false },
+        { key: 'sectionKey', label: 'Section Key', multiline: false },
+        { key: 'title', label: 'Title', multiline: false },
+        { key: 'content', label: 'Content', multiline: true },
+      ],
       wisdom_to_action: [
         { key: 'title', label: 'Title', multiline: false },
         { key: 'content', label: 'Content', multiline: true },
@@ -830,6 +855,17 @@ export default function ContentReviewPage() {
         { key: 'icon', label: 'Icon', multiline: false },
         { key: 'color', label: 'Color', multiline: false },
         { key: 'orderIndex', label: 'Order Index', multiline: false },
+      ],
+      founder_sections: [
+        { key: 'slug', label: 'Slug', multiline: false },
+        { key: 'pageTitle', label: 'Page Title', multiline: false },
+        { key: 'pageSubtitle', label: 'Page Subtitle', multiline: true },
+        { key: 'cardTitle', label: 'Card Title', multiline: false },
+        { key: 'cardSubtitle', label: 'Card Subtitle', multiline: false },
+        { key: 'cardDescription', label: 'Description (one per line)', multiline: true },
+        { key: 'imagePath', label: 'Image Path', multiline: false },
+        { key: 'badgeLabel', label: 'Badge Label', multiline: false },
+        { key: 'order', label: 'Order', multiline: false },
       ],
     }
     return map[type] || []

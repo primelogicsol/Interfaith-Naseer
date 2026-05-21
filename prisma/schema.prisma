@@ -345,6 +345,11 @@ model User {
   createdSimilarityTeachings  SimilarityTeaching[] @relation("SimilarityTeachingCreator")
   modifiedSimilarityTeachings SimilarityTeaching[] @relation("SimilarityTeachingModifier")
   approvedSimilarityTeachings SimilarityTeaching[] @relation("SimilarityTeachingApprover")
+  createdFounderSections      FounderPageSection[] @relation("FounderPageSectionCreator")
+  modifiedFounderSections     FounderPageSection[] @relation("FounderPageSectionModifier")
+  approvedFounderSections     FounderPageSection[] @relation("FounderPageSectionApprover")
+  contactMessages             ContactMessage[]     @relation("ContactMessageUser")
+  repliedContactMessages      ContactMessage[]     @relation("ContactMessageReplier")
 
   @@index([email], map: "idx_users_email")
   @@index([emailVerificationToken], map: "idx_users_email_verification_token")
@@ -686,4 +691,70 @@ model ApproachCard {
 
   @@index([sectionType], map: "idx_approach_cards_section_type")
   @@map("approach_cards")
+}
+
+model PageContent {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pageKey    String    @map("page_key")
+  sectionKey String    @map("section_key")
+  title      String?
+  content    String?
+  orderIndex Int       @default(0) @map("order_index")
+  status     String?   @default("published")
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([pageKey, sectionKey])
+  @@index([pageKey], map: "idx_page_content_page_key")
+  @@map("page_content")
+}
+
+model FounderPageSection {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug            String    @unique
+  pageTitle       String    @map("page_title")
+  pageSubtitle    String    @map("page_subtitle")
+  cardTitle       String    @map("card_title")
+  cardSubtitle    String    @map("card_subtitle")
+  cardDescription String[]  @map("card_description")
+  imagePath       String    @map("image_path")
+  badgeLabel      String    @map("badge_label")
+  order           Int       @default(0)
+  status          String?   @default("published")
+  createdBy       String?   @map("created_by") @db.Uuid
+  lastModifiedBy  String?   @map("last_modified_by") @db.Uuid
+  approvedBy      String?   @map("approved_by") @db.Uuid
+  approvedAt      DateTime? @map("approved_at") @db.Timestamptz(6)
+  rejectionReason String?   @map("rejection_reason")
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  creator         User?     @relation("FounderPageSectionCreator", fields: [createdBy], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  modifier        User?     @relation("FounderPageSectionModifier", fields: [lastModifiedBy], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  approver        User?     @relation("FounderPageSectionApprover", fields: [approvedBy], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([slug], map: "idx_founder_page_sections_slug")
+  @@index([status], map: "idx_founder_page_sections_status")
+  @@map("founder_page_sections")
+}
+
+model ContactMessage {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String?   @map("user_id") @db.Uuid
+  name       String
+  email      String
+  subject    String
+  message    String
+  adminReply String?   @map("admin_reply")
+  repliedAt  DateTime? @map("replied_at") @db.Timestamptz(6)
+  repliedBy  String?   @map("replied_by") @db.Uuid
+  isRead     Boolean?  @default(false) @map("is_read")
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user       User?     @relation("ContactMessageUser", fields: [userId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  replier    User?     @relation("ContactMessageReplier", fields: [repliedBy], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([userId], map: "idx_contact_messages_user_id")
+  @@index([email], map: "idx_contact_messages_email")
+  @@index([createdAt(sort: Desc)], map: "idx_contact_messages_created_at")
+  @@map("contact_messages")
 }

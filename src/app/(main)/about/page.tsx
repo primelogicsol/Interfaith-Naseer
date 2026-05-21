@@ -41,26 +41,35 @@ interface AboutLeaderItem {
   orderIndex: number
 }
 
+interface PageContentItem {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function AboutUs() {
   const [sections, setSections] = useState<AboutContentItem[]>([])
   const [impactGoals, setImpactGoals] = useState<ImpactGoalItem[]>([])
   const [loading, setLoading] = useState(true)
   const [values, setValues] = useState<AboutValueItem[]>([])
   const [leaders, setLeaders] = useState<AboutLeaderItem[]>([])
+  const [pageContent, setPageContent] = useState<PageContentItem[]>([])
 
   useEffect(() => {
     async function load() {
       try {
-        const [contentRes, goalsRes, valuesRes, leadersRes] = await Promise.all([
+        const [contentRes, goalsRes, valuesRes, leadersRes, pageContentRes] = await Promise.all([
           fetch('/api/about-content'),
           fetch('/api/impact-goals'),
           fetch('/api/about-values'),
           fetch('/api/about-leaders'),
+          fetch('/api/page-content?pageKey=about'),
         ])
         if (contentRes.ok) setSections(await contentRes.json())
         if (goalsRes.ok) setImpactGoals(await goalsRes.json())
         if (valuesRes.ok) setValues(await valuesRes.json())
         if (leadersRes.ok) setLeaders(await leadersRes.json())
+        if (pageContentRes.ok) setPageContent(await pageContentRes.json())
       } catch (err) {
         console.error('Error loading about content:', err)
       } finally {
@@ -69,6 +78,11 @@ export default function AboutUs() {
     }
     load()
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Who We Are'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'About'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Interfaith Peace Bridge'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   const getSection = (key: string) => sections.find(s => s.sectionKey === key)
 
@@ -105,19 +119,20 @@ export default function AboutUs() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <LucideIcons.Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Who We Are
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            About
-            <span className="block text-[#C8A75E] mt-2">Interfaith Peace Bridge</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            A global movement dedicated to building bridges of understanding, compassion, and unity
-            across all faith traditions through the timeless wisdom of Sufism.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 
@@ -278,145 +293,9 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 sacred-pattern">
-        <div className="container mx-auto max-w-2xl">
-          <div className="text-center mb-10 sm:mb-12 md:mb-16">
-            <h2 className="text-xl sm:text-3xl md:text-4xl heading-premium text-[#f5f3ee] mb-3 sm:mb-4 px-4">Contact Us</h2>
-            <div className="divider-premium max-w-xs mx-auto mb-4 sm:mb-6"></div>
-            <p className="text-sm sm:text-base text-premium max-w-xl mx-auto px-4">
-              Have a question, suggestion, or want to collaborate? Send us a message and we will get back to you.
-            </p>
-          </div>
-          <ContactForm />
-        </div>
-      </section>
       </>
       )}
     </div>
-  )
-}
-
-function ContactForm() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [subject, setSubject] = useState('')
-  const [message, setMessage] = useState('')
-  const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [error, setError] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSending(true)
-    setError('')
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message }),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Failed to send message')
-      }
-      setSent(true)
-      setName('')
-      setEmail('')
-      setSubject('')
-      setMessage('')
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setSending(false)
-    }
-  }
-
-  if (sent) {
-    return (
-      <div className="text-center p-8 sm:p-12">
-        <LucideIcons.CheckCircle className="w-16 h-16 text-[#c8a75e] mx-auto mb-4" />
-        <h3 className="text-xl sm:text-2xl heading-premium text-[#f5f3ee] mb-2">Thank You!</h3>
-        <p className="text-sm sm:text-base text-premium mb-6">Your message has been sent. We will get back to you soon.</p>
-        <button onClick={() => setSent(false)} className="text-[#c8a75e] hover:text-[#d4b56d] text-sm underline transition-colors">
-          Send another message
-        </button>
-      </div>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-      <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
-        <div>
-          <label className="block text-xs sm:text-sm font-semibold text-[#f5f3ee] mb-2">Your Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Enter your name"
-            className="w-full px-4 py-3 bg-[#0b0f2a] border border-[#c8a75e]/30 rounded-xl text-[#f5f3ee] text-sm placeholder:text-[#aab0d6]/50 focus:outline-none focus:border-[#c8a75e] focus:ring-1 focus:ring-[#c8a75e]/30 transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-xs sm:text-sm font-semibold text-[#f5f3ee] mb-2">Your Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Enter your email"
-            className="w-full px-4 py-3 bg-[#0b0f2a] border border-[#c8a75e]/30 rounded-xl text-[#f5f3ee] text-sm placeholder:text-[#aab0d6]/50 focus:outline-none focus:border-[#c8a75e] focus:ring-1 focus:ring-[#c8a75e]/30 transition-all"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-xs sm:text-sm font-semibold text-[#f5f3ee] mb-2">Subject</label>
-        <input
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          required
-          placeholder="What is this about?"
-          className="w-full px-4 py-3 bg-[#0b0f2a] border border-[#c8a75e]/30 rounded-xl text-[#f5f3ee] text-sm placeholder:text-[#aab0d6]/50 focus:outline-none focus:border-[#c8a75e] focus:ring-1 focus:ring-[#c8a75e]/30 transition-all"
-        />
-      </div>
-      <div>
-        <label className="block text-xs sm:text-sm font-semibold text-[#f5f3ee] mb-2">Message</label>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-          rows={5}
-          placeholder="Write your message here..."
-          className="w-full px-4 py-3 bg-[#0b0f2a] border border-[#c8a75e]/30 rounded-xl text-[#f5f3ee] text-sm placeholder:text-[#aab0d6]/50 focus:outline-none focus:border-[#c8a75e] focus:ring-1 focus:ring-[#c8a75e]/30 transition-all resize-none"
-        />
-      </div>
-      {error && (
-        <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-sm text-red-400">
-          <LucideIcons.AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
-      <button
-        type="submit"
-        disabled={sending}
-        className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-[#c8a75e] to-[#d4b56d] text-[#0b0f2a] rounded-xl font-semibold hover:shadow-premium transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-      >
-        {sending ? (
-          <>
-            <LucideIcons.Loader2 className="w-4 h-4 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            <LucideIcons.Send className="w-4 h-4" />
-            Send Message
-          </>
-        )}
-      </button>
-    </form>
   )
 }
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Database, Globe2, ExternalLink, Pencil, X, Check, ArrowLeft } from 'lucide-react'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 interface Tradition {
   id: string
@@ -91,6 +92,9 @@ export default function TraditionsPageEditor() {
       </div>
 
       <div className="grid gap-6">
+
+         <ContentSectionEditor pageKey="traditions" />
+         
         {/* Faith Traditions */}
         <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#c8a75e]/20">
           <div className="flex items-start justify-between mb-4">
@@ -194,6 +198,8 @@ export default function TraditionsPageEditor() {
           )}
         </div>
       </div>
+
+     
     </div>
   )
 }

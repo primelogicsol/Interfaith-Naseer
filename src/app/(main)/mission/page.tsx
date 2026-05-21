@@ -12,15 +12,26 @@ function resolveIcon(name: string | null | undefined, size = 'w-8 h-8') {
   return Icon ? <Icon className={size} /> : <Flame className={size} />
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function Mission() {
   const [currentPage, setCurrentPage] = useState(1)
   const [corePillars, setCorePillars] = useState<{ id: string; title: string; description: string; icon: string; color: string }[]>([])
   const [headerContent, setHeaderContent] = useState<{ title: string; content: string } | null>(null)
   const [sufiContent, setSufiContent] = useState<{ title: string; content: string } | null>(null)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 6
 
   useEffect(() => {
     fetchData()
+    fetch('/api/page-content?pageKey=mission')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
 
   async function fetchData() {
@@ -33,6 +44,10 @@ export default function Mission() {
     if (header.data && !Array.isArray(header.data)) setHeaderContent(header.data)
     if (sufi.data && !Array.isArray(sufi.data)) setSufiContent(sufi.data)
   }
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Our Sacred Purpose'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Our Mission for'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Interfaith Harmony'
 
   const totalPages = Math.ceil(corePillars.length / ITEMS_PER_PAGE)
   const paginatedCards = corePillars.slice(
@@ -47,13 +62,13 @@ export default function Mission() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <Flame className="w-4 h-4 sm:w-5 sm:h-5 text-[#d4a07b]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Our Sacred Purpose
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Our Mission for
-            <span className="block text-[#C8A75E] mt-2">Interfaith Harmony</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">

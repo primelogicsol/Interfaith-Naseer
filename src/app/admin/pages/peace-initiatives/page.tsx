@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { TrendingUp, Heart, Globe2, Users, Pencil, Trash2, Plus, X, Check, ArrowLeft } from 'lucide-react'
+import ContentSectionEditor from '@/components/ContentSectionEditor'
 
 interface ImpactGoal {
   id: string
@@ -969,6 +970,8 @@ export default function PeaceInitiativesPageEditor() {
           )}
         </div>
       </div>
+
+      <ContentSectionEditor pageKey="peace-initiatives" />
     </div>
   )
 }

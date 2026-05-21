@@ -28,19 +28,35 @@ interface SimilarityTheme {
   slug: string
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function Teachings() {
   const [teachings, setTeachings] = useState<Teaching[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [similarityThemes, setSimilarityThemes] = useState<SimilarityTheme[]>([])
   const [universalMessage, setUniversalMessage] = useState<{ title: string; content: string } | null>(null)
   const [teachingsPage, setTeachingsPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const TEACHINGS_PER_PAGE = 6
 
   useEffect(() => {
     fetchTeachings()
     fetchSimilarityThemes()
     fetchUniversalMessage()
+    fetch('/api/page-content?pageKey=teachings')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Sacred Wisdom'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Timeless Teachings of'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Love & Unity'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   async function fetchUniversalMessage() {
     const result = await getTeachingSection('universal_message')
@@ -78,19 +94,20 @@ export default function Teachings() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <LucideIcons.Flame className="w-4 h-4 sm:w-5 sm:h-5 text-[#d4a07b]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Sacred Wisdom
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Timeless Teachings of
-            <span className="block gradient-text mt-2">Love & Unity</span>
+            {heroHeading1}
+            <span className="block gradient-text mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            Explore sacred wisdom from Sufism and world traditions that illuminate the path
-            to peace, compassion, and divine unity.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

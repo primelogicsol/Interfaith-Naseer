@@ -11,6 +11,12 @@ import {
   getGetInvolved,
 } from '@/actions/database'
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function PeaceInitiatives() {
   const [impactGoals, setImpactGoals] = useState<any[]>([])
   const [featuredPrograms, setFeaturedPrograms] = useState<any[]>([])
@@ -18,11 +24,21 @@ export default function PeaceInitiatives() {
   const [getInvolvedItems, setGetInvolvedItems] = useState<any[]>([])
   const [currentInitiatives, setCurrentInitiatives] = useState<any[]>([])
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 4
 
   useEffect(() => {
     fetchAll()
+    fetch('/api/page-content?pageKey=peace-initiatives')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Building Peace Together'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Peace'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'Initiatives'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   async function fetchAll() {
     const [impact, programs, regional, involved] = await Promise.all([
@@ -54,19 +70,20 @@ export default function PeaceInitiatives() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
             <span className="text-sm font-semibold text-[#E07070]">
-              Building Peace Together
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight">
-            Peace
-            <span className="block text-[#C8A75E] mt-2">Initiatives</span>
+            {heroHeading1}
+            <span className="block text-[#C8A75E] mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto">
-            Active programs and collaborative projects bringing people of all faiths together
-            to create lasting peace in communities around the world.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

@@ -12,16 +12,32 @@ interface Tradition {
   coreValues: string[]
 }
 
+interface PageContent {
+  sectionKey: string
+  title: string | null
+  content: string | null
+}
+
 export default function Traditions() {
   const [traditions, setTraditions] = useState<Tradition[]>([])
   const [unitySection, setUnitySection] = useState<{ title: string; content: string } | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageContent, setPageContent] = useState<PageContent[]>([])
   const ITEMS_PER_PAGE = 6
 
   useEffect(() => {
     fetchTraditions()
     fetchUnitySection()
+    fetch('/api/page-content?pageKey=traditions')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setPageContent(data))
+      .catch(() => {})
   }, [])
+
+  const heroBadge = pageContent.find(p => p.sectionKey === 'hero_badge')?.title || 'Celebrating Diversity'
+  const heroHeading1 = pageContent.find(p => p.sectionKey === 'hero_heading_1')?.title || 'Honoring All Paths'
+  const heroHeading2 = pageContent.find(p => p.sectionKey === 'hero_heading_2')?.title || 'to the Divine'
+  const heroSubtitle = pageContent.find(p => p.sectionKey === 'hero_subtitle')?.content || ''
 
   async function fetchUnitySection() {
     const result = await getTraditionSection('unity_in_diversity')
@@ -46,19 +62,20 @@ export default function Traditions() {
           <div className="inline-flex items-center space-x-2 glass-effect px-4 sm:px-6 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6">
             <Globe2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#c8a75e]" />
             <span className="text-xs sm:text-sm font-semibold text-[#C8A75E]">
-              Celebrating Diversity
+              {heroBadge}
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl heading-premium text-[#f5f3ee] mb-4 sm:mb-6 leading-tight px-4">
-            Honoring All Paths
-            <span className="block gradient-text mt-2">to the Divine</span>
+            {heroHeading1}
+            <span className="block gradient-text mt-2">{heroHeading2}</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
-            Each tradition is a river flowing toward the ocean of divine truth. We celebrate the beauty,
-            wisdom, and unique gifts of every spiritual path.
-          </p>
+          {heroSubtitle && (
+            <p className="text-sm sm:text-base md:text-lg text-premium leading-relaxed max-w-3xl mx-auto px-4">
+              {heroSubtitle}
+            </p>
+          )}
         </div>
       </section>
 

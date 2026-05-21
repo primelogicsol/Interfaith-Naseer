@@ -77,6 +77,12 @@ const AdminLayout = memo(function AdminLayout({ children }: AdminLayoutProps) {
       adminOnly: true
     },
     {
+      title: 'Contact Messages',
+      href: '/admin/contact-us',
+      icon: MessageSquare,
+      adminOnly: true
+    },
+    {
       title: '── Page Editors ──',
       href: '',
       icon: LayoutDashboard,
@@ -176,7 +182,23 @@ const AdminLayout = memo(function AdminLayout({ children }: AdminLayoutProps) {
       title: 'About Page',
       href: '/admin/pages/about',
       icon: FileText
-    }
+    },
+    {
+      title: 'Founder Page',
+      href: '/admin/founder',
+      icon: Users
+    },
+    {
+      title: '── Page Content ──',
+      href: '',
+      icon: FileText,
+      isDivider: true
+    },
+    {
+      title: 'All Page Content',
+      href: '/admin/page-content',
+      icon: FileText
+    },
   ]
 
   const isActive = (href: string, exact?: boolean) => {
