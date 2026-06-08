@@ -69,6 +69,10 @@ export default function Footer() {
                 <span className="w-1 h-1 bg-[#d4b56d] rounded-full mr-2 group-hover:w-2 transition-all"></span>
                 Traditions
               </Link></li>
+              <li><Link href="/resources/interfaith-glossary" className="hover:text-[#d4b56d] transition-colors flex items-center group">
+                <span className="w-1 h-1 bg-[#d4b56d] rounded-full mr-2 group-hover:w-2 transition-all"></span>
+                Interfaith Glossary
+              </Link></li>
             </ul>
           </div>
           <div className="sm:col-span-2 lg:col-span-1">
@@ -100,7 +104,7 @@ export default function Footer() {
             >
               Dr Kumar Foundation USA
             </a>
-            {' '} & Sponsored By{' '}
+            {' '} , Sponsored By{' '}
              <a
               href="https://sufisciencecenter.info/"
               target="_blank"
@@ -108,6 +112,24 @@ export default function Footer() {
               className="text-[#c8a75e] hover:text-[#d4b56d] font-semibold transition-colors duration-300 underline decoration-[#c8a75e]/30 hover:decoration-[#d4b56d]"
             >
               Sufi Science Center
+            </a>
+            {' '} , Powered By{' '}
+             <a
+              href="https://sufipulse.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#c8a75e] hover:text-[#d4b56d] font-semibold transition-colors duration-300 underline decoration-[#c8a75e]/30 hover:decoration-[#d4b56d]"
+            >
+              SufiPulse
+            </a>
+            {' '} , Supported By{' '}
+             <a
+              href="https://purplesoul.shop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#c8a75e] hover:text-[#d4b56d] font-semibold transition-colors duration-300 underline decoration-[#c8a75e]/30 hover:decoration-[#d4b56d]"
+            >
+              Purple Soul
             </a>
           </p>
           <p className="text-xs sm:text-sm text-[#aab0d6]/60">&copy; 2026 Interfaith Peace Bridge. All rights reserved.</p>

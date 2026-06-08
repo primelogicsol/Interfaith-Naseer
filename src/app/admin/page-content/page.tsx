@@ -16,6 +16,7 @@ const PAGES: { label: string; href: string; pageKey: string }[] = [
   { label: 'Join Movement', href: '/admin/pages/join', pageKey: 'join' },
   { label: 'Subscribe', href: '/admin/pages/subscribe', pageKey: 'subscribe' },
   { label: 'Assessment', href: '/admin/pages/assessment', pageKey: 'assessment' },
+  { label: 'Interfaith Glossary', href: '/admin/pages/interfaith-glossary', pageKey: 'interfaith-glossary' },
 ]
 
 export default function PageContentOverview() {

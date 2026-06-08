@@ -124,6 +124,11 @@ const AdminLayout = memo(function AdminLayout({ children }: AdminLayoutProps) {
       icon: Heart
     },
     {
+      title: 'Interfaith Glossary',
+      href: '/admin/pages/interfaith-glossary',
+      icon: BookOpen
+    },
+    {
       title: '── Content Models ──',
       href: '',
       icon: Database,
