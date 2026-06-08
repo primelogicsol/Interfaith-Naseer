@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Search, BookOpen, Filter, X, ChevronDown, ChevronUp, Heart, Globe, Lightbulb, Mail } from 'lucide-react'
 import Link from 'next/link'
+import Pagination from '@/components/Pagination'
 
 interface PageContent {
   id: string
@@ -128,10 +129,16 @@ export default function InterfaithGlossaryPage() {
 
   const content = (key: string) => pageContent.find(p => p.sectionKey === key)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const ITEMS_PER_PAGE = 8
+
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTradition, setSelectedTradition] = useState('All Traditions')
   const [selectedCategory, setSelectedCategory] = useState('All Categories')
   const [selectedLetter, setSelectedLetter] = useState('All')
+
+  useEffect(() => { setCurrentPage(1) }, [searchQuery, selectedTradition, selectedCategory, selectedLetter])
+
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
@@ -152,11 +159,20 @@ export default function InterfaithGlossaryPage() {
     })
   }, [searchQuery, selectedTradition, selectedCategory, selectedLetter])
 
+  const totalPages = Math.ceil(filteredTerms.length / ITEMS_PER_PAGE)
+  const paginatedTerms = filteredTerms.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
+
+  useEffect(() => { if (currentPage > totalPages && totalPages > 0) setCurrentPage(totalPages) }, [currentPage, totalPages])
+
   const clearFilters = () => {
     setSearchQuery('')
     setSelectedTradition('All Traditions')
     setSelectedCategory('All Categories')
     setSelectedLetter('All')
+    setCurrentPage(1)
   }
 
   const hasActiveFilters = searchQuery || selectedTradition !== 'All Traditions' || selectedCategory !== 'All Categories' || selectedLetter !== 'All'
@@ -335,18 +351,25 @@ export default function InterfaithGlossaryPage() {
           </div>
 
           {filteredTerms.length > 0 ? (
-            <div className="space-y-4">
-              {filteredTerms.map((term, index) => (
-                <GlossaryCard
-                  key={`${term.term}-${index}`}
-                  term={term}
-                  isExpanded={expandedTerm === `${term.term}-${index}`}
-                  onToggle={() => setExpandedTerm(
-                    expandedTerm === `${term.term}-${index}` ? null : `${term.term}-${index}`
-                  )}
-                />
-              ))}
-            </div>
+            <>
+              <div className="space-y-4">
+                {paginatedTerms.map((term, index) => (
+                  <GlossaryCard
+                    key={`${term.term}-${index}`}
+                    term={term}
+                    isExpanded={expandedTerm === `${term.term}-${index}`}
+                    onToggle={() => setExpandedTerm(
+                      expandedTerm === `${term.term}-${index}` ? null : `${term.term}-${index}`
+                    )}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
           ) : (
             <div className="card-premium p-8 sm:p-12 text-center">
               <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 text-[#C8A75E]/40 mx-auto mb-4" />
